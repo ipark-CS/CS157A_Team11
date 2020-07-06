@@ -2,3 +2,5 @@
 
 ### GNT-Market
 Grocery Nutrient Tracker DB Web App
+
+![GNT-market-ERD](ERD.png)
