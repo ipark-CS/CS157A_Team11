@@ -3,4 +3,4 @@
 ### GNT-Market
 Grocery Nutrient Tracker DB Web App
 
-![GNT-market-ERD](ERD.png)
+![GNT-market-ERD](https://github.com/ipark-CS/CS157A_Team11/blob/master/DBmodel_ERD/ERD.png)
