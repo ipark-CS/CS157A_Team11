@@ -1,0 +1,40 @@
+<%@ page import="java.sql.*"%>
+<html>
+  <head>
+  
+    <title>Summer2020 - CS157A - Team11 - Tracy | Inhee</title>
+    </head>
+    
+  <body>
+    <h1>Grocery Nutrient Tracker (GNT) Market</h1>
+    
+
+    <% 
+     String db = "GNTmarket";
+        String user; // assumes database name is the same as username
+          user = "root";
+          String password = "Summer2020~";
+        try {
+            
+            java.sql.Connection con; 
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url="jdbc:mysql://localhost:3306/" + db + "?serverTimezone=UTC";
+            con = DriverManager.getConnection(url, user, password);
+            out.println(db + " database successfully opened.<br/><br/>");
+            
+            String tableName = "Food";
+            out.println("Initial entries in table " + tableName + " <br/>");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
+            while (rs.next()) {
+                out.println(rs.getInt(1) + " " + rs.getString(2) + "<br/><br/>");
+            }
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch(SQLException e) { 
+            out.println("SQLException caught: " + e.getMessage()); 
+        }
+    %>
+  </body>
+</html>
