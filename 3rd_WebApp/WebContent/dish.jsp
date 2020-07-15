@@ -55,7 +55,7 @@
     <a class="p-2 text-dark" href="dish.jsp">Dish</a>
     <a class="p-2 text-dark" href="food.jsp">Food</a>
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
-    <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
+    <a class="p-2 text-dark" href="bodysystem.jsp#">BodySystem</a>
   </nav>
   <a class="btn btn-outline-primary" href="#">Login</a>
 </div>
@@ -76,12 +76,12 @@
             con = DriverManager.getConnection(url, user, password);
             out.println(db + " database successfully opened.<br/><br/>");
             
-            String tableName = "Food";
+            String tableName = "Food_in_Category";
         	%>
         	<div class="list-group">
         	
             <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " Table fetched"%>
+            <%=tableName + " table fetched"%>
            </button>
            	<%
             Statement stmt = con.createStatement();
@@ -89,7 +89,7 @@
             while (rs.next()) {
             	%>
             	<button type="button" class="list-group-item list-group-item-action">
-            	<%=rs.getInt(1) + " " + rs.getString(2)%>
+            	<%=rs.getInt(1) + " " + rs.getInt(2) + " " + rs.getString(3)%>
             	 </button>
 				<%
             }

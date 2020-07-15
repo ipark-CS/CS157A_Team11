@@ -55,7 +55,7 @@
     <a class="p-2 text-dark" href="dish.jsp">Dish</a>
     <a class="p-2 text-dark" href="food.jsp">Food</a>
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
-    <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
+    <a class="p-2 text-dark" href="bodysystem.jsp#">BodySystem</a>
   </nav>
   <a class="btn btn-outline-primary" href="#">Login</a>
 </div>
@@ -76,7 +76,7 @@
             con = DriverManager.getConnection(url, user, password);
             out.println(db + " database successfully opened.<br/><br/>");
             
-            String tableName = "Food";
+            String tableName = "BodySystem";
         	%>
         	<div class="list-group">
         	
