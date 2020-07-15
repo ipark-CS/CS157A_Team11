@@ -81,7 +81,7 @@
         	<div class="list-group">
         	
             <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " Table fetched"%>
+            <%=tableName + " table fetched"%>
            </button>
            	<%
             Statement stmt = con.createStatement();
