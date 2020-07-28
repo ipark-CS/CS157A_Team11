@@ -1,5 +1,10 @@
 <%@ page import="java.sql.*"%>
-  
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page isELIgnored="false" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -52,58 +57,19 @@
     </form>
   </nav>
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="dish.jsp">Dish</a>
+    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
+    <a class="p-2 text-dark" href="index.jsp">Dish</a>
     <a class="p-2 text-dark" href="food.jsp">Food</a>
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
     <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
+    <a class="p-2 text-dark" href="/GNTmarket/new-account">Create Account</a>
+    <a class="p-2 text-dark" href="/GNTmarket/login">Login</a>
+    <a class="p-2 text-dark" href="/GNTmarket/user-list">User Test Page</a>
   </nav>
-  <a class="btn btn-outline-primary" href="#">Login</a>
-</div>
-
-<main role="main" class="container">
-
   
-   <% 
-     String db = "GNTmarket";
-        String user; // assumes database name is the same as username
-          user = "root";
-          String password = "Summer2020~";
-        try {
-            
-            java.sql.Connection con; 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url="jdbc:mysql://localhost:3306/" + db + "?serverTimezone=UTC";
-            con = DriverManager.getConnection(url, user, password);
-            out.println(db + " database successfully opened.<br/><br/>");
-            
-            String tableName = "Food";
-        	%>
-        	<div class="list-group">
-        	
-            <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " table fetched"%>
-           </button>
-           	<%
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-            while (rs.next()) {
-            	%>
-            	<button type="button" class="list-group-item list-group-item-action">
-            	<%=rs.getInt(1) + " " + rs.getString(2)%>
-            	 </button>
-				<%
-            }
-            rs.close();
-            stmt.close();
-            con.close();
-        } catch(SQLException e) { 
-            out.println("SQLException caught: " + e.getMessage()); 
-        }
-    %>
- 
-
 </div>
 
-</main><!-- /.container -->
-
+    <div align="center">
+    	<h1>Welcome to GNT Market!</h1>
+    </div>
 </body></html>

@@ -54,7 +54,7 @@
   <nav class="my-2 my-md-0 mr-md-3">
     <a class="p-2 text-dark" href="dish.jsp">Dish</a>
     <a class="p-2 text-dark" href="food.jsp">Food</a>
-    <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
+    <a class="p-2 text-dark" href="/test">Nutrient</a>
     <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
     <a class="p-2 text-dark" href="user.jsp">User</a>
     <a class="p-2 text-dark" href="grocerylist.jsp">Grocery List</a>

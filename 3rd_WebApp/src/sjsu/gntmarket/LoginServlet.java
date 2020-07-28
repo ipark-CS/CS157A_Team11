@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/login")
+@WebServlet("/login-dummy")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -49,15 +49,11 @@ public class LoginServlet extends HttpServlet {
             String destPage = "login.jsp";
              
             if (user != null) {
-            	
-            	System.out.println("User Found");
-            	
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 destPage = "user.jsp";
             } else {
                 String message = "Invalid email/password";
-                System.out.println("No User Found");
                 //request.setAttribute("message", message);
             }
              

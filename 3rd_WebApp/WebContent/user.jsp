@@ -1,4 +1,7 @@
 <%@ page import="java.sql.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
   
 <html lang="en">
 <head>
@@ -43,6 +46,7 @@
 
   
 <body>
+
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal">GNT-Market</h5>
   <nav class="my-2 my-md-0 mr-md-3">
@@ -52,60 +56,36 @@
     </form>
   </nav>
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="dish.jsp">Dish</a>
+    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
+    <a class="p-2 text-dark" href="index.jsp">Dish</a>
     <a class="p-2 text-dark" href="food.jsp">Food</a>
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
     <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
-    <a class="p-2 text-dark" href="user.jsp">User</a>
-    <a class="p-2 text-dark" href="grocerylist.jsp">Grocery List</a>
+    <a class="p-2 text-dark" href="/GNTmarket/new-account">Create Account</a>
+    <a class="p-2 text-dark" href="/GNTmarket/login">Login</a>
   </nav>
-  <a class="btn btn-outline-primary" href="#">Login</a>
+  <a class="btn btn-outline-primary" href="/GNTMarket/login">Login</a>
 </div>
 
-<main role="main" class="container">
+    <div align="center">
+        <table border="1" cellpadding="5">
+            <caption><h2>User List Page</h2></caption>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Name</th>
+            </tr>
+            <c:forEach items="${userList}" var="user">
+                <tr>
+                    <td><c:out value="${user.id}" /></td>
+                    <td><c:out value="${user.email}" /></td>
+                    <td><c:out value="${user.password}" /></td>
+                    <td><c:out value="${user.name}" /></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
 
-  
-   <% 
-     String db = "gnt-market";
-        String user; // assumes database name is the same as username
-          user = "root";
-          String password = "admin";
-        try {
-            
-            java.sql.Connection con; 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url="jdbc:mysql://localhost:3306/" + db + "?serverTimezone=UTC";
-            con = DriverManager.getConnection(url, user, password);
-            out.println(db + " database successfully opened.<br/><br/>");
-            
-            String tableName = "users";
-        	%>
-        	<div class="list-group">
-        	
-            <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " table fetched"%>
-           </button>
-           	<%
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-            while (rs.next()) {
-            	%>
-            	<button type="button" class="list-group-item list-group-item-action">
-            	<%=rs.getInt(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4)%>
-            	 </button>
-				<%
-            }
-            rs.close();
-            stmt.close();
-            con.close();
-        } catch(SQLException e) { 
-            out.println("SQLException caught: " + e.getMessage()); 
-        }
-    %>
- 
-
-</div>
-
-</main><!-- /.container -->
-
-</body></html>
+</body>
+</html>

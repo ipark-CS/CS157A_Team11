@@ -1,10 +1,28 @@
 package sjsu.gntmarket;
 
 public class User {
-    private int id;
-    private String email;
-    private String password;
-    private String name;
+    public int id;
+    public String email;
+    public String password;
+    public String name;
+    
+    public User() {
+    }
+    
+    public User(int id) {
+    	this.id = id;
+    }
+    
+    public User(int id, String email, String password, String name) {
+    	this(email, password, name);
+    	this.id = id; 
+    }
+    
+    public User(String email, String password, String name) {
+    	this.email = email;
+    	this.password = password;
+    	this.name = name;
+    }
     
 	public int getId() {
 		return id;
