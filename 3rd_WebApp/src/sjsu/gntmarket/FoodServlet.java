@@ -43,29 +43,26 @@ public class FoodServlet extends HttpServlet {
          conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
          
          stmt = conn.createStatement();
+         
+         // food ////////////////////////////////
          String sqlStr = "SELECT name FROM Food";
          ResultSet rset = stmt.executeQuery(sqlStr);
 
          String htmlStr="<html><head><title>GNT-market</title></head><body>\n"
-         + "<h2>Grocery List</h2>\n"
+         + "<h2>Select/Type Food</h2>\n"
          + "<form method='get' action='search'>\n"
-         + "Food: <select name='name' size='1'>\n"
-         + "<option value=''>Select...</option>\n";
+         + "<select name='name' size='1'>\n"
+         + "<option value=''>Select Food</option>\n";
          
          while (rset.next()) {  // list all the food
             String name = rset.getString("name");
             htmlStr += "<option value='" + name + "'>" + name + "</option>";
-         }
-         htmlStr += "</select><br/>\n"
-         + "<p>OR</p>\n";
- 
+         } 
          // A text field for entering search word for pattern matching
-         htmlStr += "Search \"Food\": <input type='text' name='search' />\n";
+         htmlStr += "<input type='text' onfocus=\"this.value=''\" name='fsearch' placeholder='Type Food Name'/>\n";
  
          // Submit and reset buttons
-         htmlStr += "<br/><br/>\n"
-         + "<input type='submit' value='SEARCH' />\n"
-         + "<input type='reset' value='CLEAR' />\n"
+         htmlStr += "<input type='submit' value='Add to Grocery List' />\n"
          + "</form>\n";
  
          // Show "View Shopping Cart" if the cart is not empty
@@ -82,6 +79,7 @@ public class FoodServlet extends HttpServlet {
             }
          }
          */
+         
          htmlStr += "</body></html>\n";
          out.println(htmlStr);
 
