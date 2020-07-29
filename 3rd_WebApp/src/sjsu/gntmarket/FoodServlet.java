@@ -27,7 +27,6 @@ public class FoodServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
    @Override
@@ -41,7 +40,6 @@ public class FoodServlet extends HttpServlet {
 
       try {
          conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
-         
          stmt = conn.createStatement();
          
          // food ////////////////////////////////
@@ -62,24 +60,21 @@ public class FoodServlet extends HttpServlet {
          htmlStr += "<input type='text' onfocus=\"this.value=''\" name='fsearch' placeholder='Type Food Name'/>\n";
  
          // Submit and reset buttons
-         htmlStr += "<input type='submit' value='Add to Grocery List' />\n"
+         htmlStr += "<input type='submit' value='Search' />\n"
          + "</form>\n";
  
          // Show "View Shopping Cart" if the cart is not empty
-         /*
          HttpSession session = request.getSession(false); // check if session exists
          if (session != null) {
-            Cart cart;
+            GroceryCard gCard;
             synchronized (session) {
                // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-               cart = (Cart) session.getAttribute("cart");
-               if (cart != null && !cart.isEmpty()) {
-                  htmlStr += "<P><a href='cart?todo=view'>View Shopping Cart</a></p>\n";
+               gCard = (GroceryCard) session.getAttribute("gCard");
+               if (gCard != null && !gCard.isEmpty()) {
+                  htmlStr += "<P><a href='gCard?todo=view'>Grocery List</a></p>\n";
                }
             }
          }
-         */
-         
          htmlStr += "</body></html>\n";
          out.println(htmlStr);
 

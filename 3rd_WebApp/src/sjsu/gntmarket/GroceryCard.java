@@ -6,15 +6,15 @@ import java.util.List;
 
 public class GroceryCard {
 
-   private List<GroceryCardItem> groceryCard;
+   private List<GroceryCardItem> gCard;
 
    // constructor
    public GroceryCard() {
-      groceryCard = new ArrayList<GroceryCardItem>();
+      gCard = new ArrayList<GroceryCardItem>();
    }
 
    public void add(int id, String name) {
-      Iterator<GroceryCardItem> iter = groceryCard.iterator();
+      Iterator<GroceryCardItem> iter = gCard.iterator();
       while (iter.hasNext()) {
          GroceryCardItem item = iter.next();
          if (item.getId() == id) {
@@ -23,30 +23,30 @@ public class GroceryCard {
          }
       }
       // id not found, create a new CartItem
-      groceryCard.add(new GroceryCardItem(id, name));
+      gCard.add(new GroceryCardItem(id, name));
    }
 
    // Remove 
    public void remove(int id) {
-      Iterator<GroceryCardItem> iter = groceryCard.iterator();
+      Iterator<GroceryCardItem> iter = gCard.iterator();
       while (iter.hasNext()) {
          GroceryCardItem item = iter.next();
          if (item.getId() == id) {
-            groceryCard.remove(item);
+            gCard.remove(item);
             return;
          }
       }
    }
 
    public boolean isEmpty() {
-      return groceryCard.size() == 0;
+      return gCard.size() == 0;
    }
 
    public List<GroceryCardItem> getItems() {
-      return groceryCard;
+      return gCard;
    }
 
    public void clear() {
-      groceryCard.clear();
+      gCard.clear();
    }
 }
