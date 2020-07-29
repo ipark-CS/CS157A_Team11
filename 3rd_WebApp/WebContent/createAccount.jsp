@@ -8,14 +8,14 @@
 </head>
 <body>
 	<h1>Create New User</h1>
-	<form action="CreateUserServlet" method="post">
+	<form action="insert" method="post">
 			<label for="name">Name:</label>
-			<input type="text" id="name" name="name" size="30">
+			<input type="text" id="name" name="name" size="30" />
 			<br><br><label for="email">Email:</label>
-			<input type="text" id="email" name="email" size="30">
+			<input type="text" id="email" name="email" size="30" />
 			<br><br><label for="pass">Password:</label>
-			<input type="password" id="pass" name="password" size="30">
-			<br><br><button type="submit">Create New Account</button>
+			<input type="password" id="pass" name="password" size="30"/>
+			<br><br><input type="submit" value = "Create New Account" />
 	</form>
 </body>
 </html>
