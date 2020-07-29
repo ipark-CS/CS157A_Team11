@@ -65,6 +65,10 @@ public class UserServlet extends HttpServlet {
 			case "/new-account":
 				showNewUserForm(request, response);
 				break;
+			case "/insert":
+				System.out.println("Inside Insert");
+				insertUser(request, response);
+				break;
 			case "/user-list":
 				listUser(request, response);
 				break;
@@ -94,6 +98,21 @@ public class UserServlet extends HttpServlet {
 		
 		request.setAttribute("userList", userList);
 		dispatcher.forward(request, response);
+	}
+	
+	public void insertUser(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		
+		 String email = request.getParameter("email");
+	     String password = request.getParameter("password");
+	     String name = request.getParameter("name");
+	     
+	     System.out.println("Email: " + email + ", Pass: " + password + ", Name: " + name);
+	     
+	     User newUser = new User(email, password, name);
+	     userDAO.createUser(newUser);
+	     response.sendRedirect("user-list");
+		
 	}
 
 	public void showNewUserForm(HttpServletRequest request, HttpServletResponse response)
