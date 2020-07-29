@@ -73,37 +73,36 @@ public class SearchServlet extends HttpServlet {
             + "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"
             + "<th>Food</th>\n"
-            + "<th>Nutrient</th>\n"
             + "<th>Favorite</th>\n"
             + "<th>Avoid</th>\n"
             + "</tr>\n";
  			
             // ResultSet's cursor now pointing at first row
             do {
-               // Print each row with a checkbox identified by book's id
                String id = rset.getString("food_id");
                htmlStr += "<tr>\n"
-               + "<td><input type='checkbox' name='id' value='" + id + "' /></td>\n"
-               + "<td>" + rset.getString("name") + "</td>\n"
-               + "</tr>\n";
+                       + "<td>" + rset.getString("name") + "</td>\n"
+                       + "<td><input type='radio' name='prefer' id='like' value='" + id + "' /></td>\n"
+                       + "<td><input type='radio' name='prefer' id='avoid' value='" + id + "' /></td>\n"
+                       + "</tr>\n";
             } while (rset.next());
             htmlStr += "</table><br />\n"
-            + "<input type='submit' value='Add to My Shopping Cart' />\n"
-            + "<input type='reset' value='CLEAR' /></form>\n"
-            + "<p><a href='food'>Back to Select Menu</a></p>\n";
- 			/*
-            // Show "View Shopping Cart" if cart is not empty
+            + "<input type='submit' value='Add' />\n"
+            + "<input type='reset' value='Clear' /></form>\n"
+            + "<p><a href='food'>Select More Food</a></p>\n";
+ 			
+            
             HttpSession session = request.getSession(false); // check if session exists
             if (session != null) {
-               Cart cart;
+               GroceryCard gCard;
                synchronized (session) {
                   // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-                  cart = (Cart) session.getAttribute("cart");
-                  if (cart != null && !cart.isEmpty()) {
-                     htmlStr += "<p><a href='cart?todo=view'>View Shopping Cart</a></p>\n";
+                  gCard = (GroceryCard) session.getAttribute("gCard");
+                  if (gCard != null && !gCard.isEmpty()) {
+                     htmlStr += "<p><a href='cart?todo=view'>Grocery List</a></p>\n";
                   }
                }
-            }*/
+            }
             htmlStr += "</body></html>\n";
             out.println(htmlStr);
 
