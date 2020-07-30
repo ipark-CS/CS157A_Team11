@@ -143,7 +143,7 @@ public class UserServlet extends HttpServlet {
 	    
 	    request.setAttribute("currentUser", returningUser);
 	    
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("grocerylist.jsp");
 		dispatcher.forward(request, response);
 		
 	}

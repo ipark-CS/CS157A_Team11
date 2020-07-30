@@ -1,5 +1,7 @@
 <%@ page import="java.sql.*"%>
-  
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -64,47 +66,9 @@
 
 <main role="main" class="container">
 
-  
-   <% 
-     String db = "gnt-market";
-        String user; // assumes database name is the same as username
-          user = "root";
-          String password = "admin";
-        try {
-            
-            java.sql.Connection con; 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url="jdbc:mysql://localhost:3306/" + db + "?serverTimezone=UTC";
-            con = DriverManager.getConnection(url, user, password);
-            out.println(db + " database successfully opened.<br/><br/>");
-            
-            String tableName = "grocerylist";
-        	%>
-        	<div class="list-group">
-        	
-            <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " table fetched"%>
-           </button>
-           	<%
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-            while (rs.next()) {
-            	%>
-            	<button type="button" class="list-group-item list-group-item-action">
-            	<%=rs.getInt(1) + " " + rs.getString(2)%>
-            	 </button>
-				<%
-            }
-            rs.close();
-            stmt.close();
-            con.close();
-        } catch(SQLException e) { 
-            out.println("SQLException caught: " + e.getMessage()); 
-        }
-    %>
- 
-
-</div>
+    	<br><c:if test="${currentUser != null}">  
+    		<h2>Hello, <c:out value="${currentUser.name}"></c:out>!</h2>
+    	</c:if>
 
 </main><!-- /.container -->
 
