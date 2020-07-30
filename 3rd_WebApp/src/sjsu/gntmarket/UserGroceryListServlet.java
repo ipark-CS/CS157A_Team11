@@ -8,12 +8,12 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
-public class GroceryCardServlet extends HttpServlet {
+public class UserGroceryListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private String dbURL, dbUser, dbPassword;
 
-	public GroceryCardServlet() {
+	public UserGroceryListServlet() {
 		super();
 	}
 
@@ -52,70 +52,24 @@ public class GroceryCardServlet extends HttpServlet {
          stmt = conn.createStatement();
 
          String htmlStr = "<html><head><title>GNT-market</title></head><body>\n"
-         + "<h2>Grocery List Edit</h2>\n";
+         + "<h2>User Grocery List</h2>\n";
 
-         String todo = request.getParameter("todo");
-         //if (todo == null) todo = "view";  // to prevent null pointer
-
-         if (todo.equals("addF")) {
-            String[] ids = request.getParameterValues("id");
-            if (ids == null) {
-               out.println("<h3>Please Select a Food!</h3></body></html>");
-               return;
-            }
-            for (String id : ids) {
-               sqlStr = "SELECT * FROM Food WHERE food_id = " + id;
-               System.out.println(sqlStr);  // for debugging
-               rset = stmt.executeQuery(sqlStr);
-               rset.next(); // Expect only one row in ResultSet
-               String name = rset.getString("name");
-               int idInt = rset.getInt("food_id");
-               if (todo.equals("addF")) {
-                  gCard.add(idInt, name);
-               } 
-            }
-         } else if (todo.equals("delF")) {
-            String id = request.getParameter("id");  // Only one id for remove case
-            gCard.remove(Integer.parseInt(id));
-         } else if (todo.equals("avoidF")) {
-            String id = request.getParameter("id");  // Only one id for remove case
-            sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
-            System.out.println(sqlStr);  // for debugging
-            stmt.executeUpdate(sqlStr);
-         } else if (todo.equals("likeF")) {
-            String id = request.getParameter("id");  // Only one id for remove case
-            sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 0, 1)";
-            System.out.println(sqlStr);  // for debugging
-            stmt.executeUpdate(sqlStr);
-         }
- 
          // All cases - Always display the shopping cart
          if (gCard.isEmpty()) {
             out.println("<p>Your Grocery List is empty</p>");
          } else {
             htmlStr += "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"
-            + "<th>Food</th>\n"
-            + "<th>Preference</th>\n";
+            + "<th>Food</th>\n";
 
             for (GroceryCardItem item : gCard.getItems()) {
                int id = item.getId();
                String name = item.getName();
-
-               
-               htmlStr += "<tr>\n"
-               + "<td>" + name + "</td>"
-               + "<td><form method='get' action='gCard'>\n"
-               + "<input type='hidden' name='id' value='" + id + "'/>\n"
-               + "<label><input type='radio' name='todo' value='likeF'/>Like</label>\n"
-               + "<label><input type='radio' name='todo' value='avoidF'/>Avoid</label>\n"
-               + "<input type='submit' value='update'>\n"
-               + "</td></form>\n";
+               htmlStr += "<tr><td>" + name + "</td>\n";
             }
             htmlStr += "</tr></table>\n";
          }
-         htmlStr += "<p><a href='food'>Select More Food</a></p>\n"
-         + "<p><form method='get' action='userGlist'><input type='submit' value='Save'></form></p>\n"
+         htmlStr += "<p><a href='/'>Return to Home</a></p>\n"
          + "</body></html>\n";
 
          out.println(htmlStr);
