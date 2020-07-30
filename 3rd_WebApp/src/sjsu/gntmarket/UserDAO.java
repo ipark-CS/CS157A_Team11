@@ -99,24 +99,28 @@ public class UserDAO {
     	return userList;
     }
     
-    public User getUser(int userID) throws SQLException {
+    public User getUser(String email, String password) throws SQLException {
     	User user = null;
     	
-    	String sql = "SELECT * FROM users WHERE user_id = ?";
+    	String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
     	
     	mysqlConnect();
     	
     	PreparedStatement statement = dbCon.prepareStatement(sql);
-    	statement.setInt(1, userID);
+    	statement.setString(1, email);
+    	statement.setString(2, password);
     	
     	ResultSet rs = statement.executeQuery();
     	
     	if(rs.next()) {
-    		String email = rs.getString("email");
-    		String password = rs.getString("password");
+    		int userID = rs.getInt("user_id");
+    		email = rs.getString("email");
+    		password = rs.getString("password");
     		String name = rs.getString("name");
     		
     		user = new User(userID, email, password, name);
+    		
+    		System.out.println("Welcome, " + user.getName());
     	}
     	
     	rs.close();

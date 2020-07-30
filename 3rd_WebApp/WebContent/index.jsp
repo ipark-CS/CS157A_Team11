@@ -60,6 +60,7 @@
     <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
     <a class="p-2 text-dark" href="index.jsp">Dish</a>
     <a class="p-2 text-dark" href="food.jsp">Food</a>
+    <a class="p-2 text-dark" href="grocerylist.jsp">Grocery List</a>
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
     <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
     <a class="p-2 text-dark" href="/GNTmarket/new-account">Create Account</a>
@@ -71,5 +72,8 @@
 
     <div align="center">
     	<h1>Welcome to GNT Market!</h1>
+    	<br><c:if test="${currentUser != null}">  
+    		<h2>Hello, <c:out value="${currentUser.name}"></c:out>!</h2>
+    	</c:if>
     </div>
 </body></html>

@@ -9,12 +9,12 @@
 <body>
 	<div style="text-align: center" id = "login-section">
 		<h2>User Login</h2>
-		<form action="login" method="post">
+		<form action="login-user" method="post">
 			<label for="email">Email:</label> 
 			<input type="text" id="email" name="email" size="30">
 			<br><br><label for="pass">Password:</label>
 			<input type="password" id="pass" name="password" size="30">
-			<br><br><button type="submit">Login</button>
+			<br><br><input type="submit" value = "Login" />
 		</form>
 		<br>
 	</div>

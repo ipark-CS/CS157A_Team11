@@ -66,7 +66,6 @@ public class UserServlet extends HttpServlet {
 				showNewUserForm(request, response);
 				break;
 			case "/insert":
-				System.out.println("Inside Insert");
 				insertUser(request, response);
 				break;
 			case "/user-list":
@@ -74,6 +73,9 @@ public class UserServlet extends HttpServlet {
 				break;
 			case "/login":
 				loginPage(request, response);
+				break;
+			case "/login-user":
+				loginUser(request, response);
 				break;
 			default:
 				System.out.println("Reached Default");
@@ -129,18 +131,29 @@ public class UserServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 			dispatcher.forward(request, response);
 
-		}
+	}
+	
+	public void loginUser(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
+		
+		String email = request.getParameter("email");
+	    String password = request.getParameter("password");
+	    
+	    User returningUser = userDAO.getUser(email, password);
+	    
+	    request.setAttribute("currentUser", returningUser);
+	    
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
+		
+	}
 	
 	public void returnToHome(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		
-		List<User> userList = userDAO.listUsers();
-		
-		System.out.println("Before Index Dispatch, list count: " + userList.size());
+		System.out.println("Returning to Home Page");
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-		
-		request.setAttribute("userList", userList);
 		dispatcher.forward(request, response);
 		
 	}
