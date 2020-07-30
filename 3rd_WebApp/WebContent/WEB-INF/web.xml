@@ -66,6 +66,18 @@
         <url-pattern>/gCard</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>UserGroceryListServlet</servlet-name>
+        <servlet-class>sjsu.gntmarket.UserGroceryListServlet</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>UserGroceryListServlet</servlet-name>
+        <url-pattern>/userGlist</url-pattern>
+    </servlet-mapping>
+
+
  
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
