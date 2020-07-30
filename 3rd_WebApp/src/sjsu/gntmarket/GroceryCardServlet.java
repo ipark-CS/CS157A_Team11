@@ -108,18 +108,18 @@ public class GroceryCardServlet extends HttpServlet {
                + "<td><form method='get' action='gCard'>\n"
                + "<input type='hidden' name='todo' value='likeF'/>\n"
                + "<input type='hidden' name='id' value='" + id + "'/>\n"
-               + "<input type='submit' value='mark'/>\n"
+               + "<input type='radio' onClick=\"this.form.submit()\"/>\n"
                + "</form></td>\n"
                + "<td><form method='get' action='gCard'>\n"
                + "<input type='hidden' name='todo' value='avoidF'/>\n"
                + "<input type='hidden' name='id' value='" + id + "'/>\n"
-               + "<input type='submit' value='mark'/>\n"
+               + "<input type='radio' onClick=\"this.form.submit()\"/>\n"
                + "</td></form>\n";
             }
             htmlStr += "</tr></table>\n";
          }
          htmlStr += "<p><a href='food'>Select More Food</a></p>\n"
-         + "<p><form method='get' action='/'><input type='submit' value='Save'></form></p>\n"
+         + "<p><form method='get' action=''><input type='submit' value='Save'></form></p>\n"
          + "</body></html>\n";
 
          out.println(htmlStr);
