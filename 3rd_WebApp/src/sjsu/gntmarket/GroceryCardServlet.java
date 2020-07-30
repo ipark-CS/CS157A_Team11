@@ -45,14 +45,13 @@ public class GroceryCardServlet extends HttpServlet {
       Statement  stmt   = null;
       ResultSet  rset   = null;
       String     sqlStr = null;
-      String     htmlStr = null;
 
 
       try {
          conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
          stmt = conn.createStatement();
 
-         htmlStr += "<html><head><title>GNT-market</title></head><body>\n"
+         String htmlStr = "<html><head><title>GNT-market</title></head><body>\n"
          + "<h2>Grocery List</h2>\n";
 
          String todo = request.getParameter("todo");
@@ -80,7 +79,14 @@ public class GroceryCardServlet extends HttpServlet {
             gCard.remove(Integer.parseInt(id));
          } else if (todo.equals("avoidF")) {
             String id = request.getParameter("id");  // Only one id for remove case
-            System.out.println("Avoid " + id);
+            sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
+            System.out.println(sqlStr);  // for debugging
+            stmt.executeUpdate(sqlStr);
+         } else if (todo.equals("likeF")) {
+            String id = request.getParameter("id");  // Only one id for remove case
+            sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 0, 1)";
+            System.out.println(sqlStr);  // for debugging
+            stmt.executeUpdate(sqlStr);
          }
  
          // All cases - Always display the shopping cart
@@ -90,47 +96,33 @@ public class GroceryCardServlet extends HttpServlet {
             htmlStr += "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"
             + "<th>Food</th>\n"
-            + "<th>Restricted</th>\n"
-            + "<th>Remove</th>\n";
+            + "<th>Like</th>\n"
+            + "<th>Avoid</th>\n";
 
             for (GroceryCardItem item : gCard.getItems()) {
                int id = item.getId();
                String name = item.getName();
 
                htmlStr += "<tr>\n"
-               + "<td>" + name + "</td>\n"
+               + "<td>" + name + "</td>"
                + "<td><form method='get' action='gCard'>\n"
-               + "<input type='hidden' name='todo' value='avoidF' />\n"
-               + "<input type='hidden' name='id' value='" + id + "' />\n"
-               + "<input type='submit' value='Avoid' />\n"
+               + "<input type='hidden' name='todo' value='likeF'/>\n"
+               + "<input type='hidden' name='id' value='" + id + "'/>\n"
+               + "<input type='submit' value='mark'/>\n"
                + "</form></td>\n"
                + "<td><form method='get' action='gCard'>\n"
-               + "<input type='hidden' name='todo' value='delF'\n"
-               + "<input type='hidden' name='id' value='" + id + "'>\n"
-               + "<input type='submit' value='Remove'>\n"
-               + "</form></td>\n"
-               + "</tr>\n";
+               + "<input type='hidden' name='todo' value='avoidF'/>\n"
+               + "<input type='hidden' name='id' value='" + id + "'/>\n"
+               + "<input type='submit' value='mark'/>\n"
+               + "</td></form>\n";
             }
-            htmlStr += "</table>\n";
+            htmlStr += "</tr></table>\n";
          }
          htmlStr += "<p><a href='food'>Select More Food</a></p>\n"
-         + "<p><form method='get'>\n"
-         + "<input type='submit' value='Save'></p>\n"
+         + "<p><form method='get' action='/'><input type='submit' value='Save'></form></p>\n"
          + "</body></html>\n";
 
          out.println(htmlStr);
-
-
-         session = request.getSession(false); // check if session exists
-         if (session != null) {
-            synchronized (session) {
-               // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-               gCard = (GroceryCard) session.getAttribute("gCard");
-               if (gCard != null && !gCard.isEmpty()) {
-                  htmlStr += "<p><a href='gCard?todo=view'>Grocery List</a></p>\n";
-               }
-            }
-         }
 
       } catch (SQLException ex) {
          out.println("<h3>Service not available. Please try again later!</h3></body></html>");
