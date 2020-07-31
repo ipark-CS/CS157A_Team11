@@ -51,8 +51,8 @@ public class SearchServlet extends HttpServlet
           conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
           stmt = conn.createStatement();
 
+          /*
           String sqlStr = "SELECT * FROM Food WHERE ";
-                                                                                 
           if (hasFname)
               sqlStr += "name = '" + fname + "' ";
           if (hasFsearch) {
@@ -60,6 +60,27 @@ public class SearchServlet extends HttpServlet
                   sqlStr += " OR ";
               sqlStr += "name LIKE '%" + fsearchW.trim() + "%' ORDER BY name";
           } 
+          SELECT f.name, f.food_id AS food_id, GROUP_CONCAT(n.name SEPARATOR ', ') AS Nutrients
+          FROM Food_has_Nutrient fn NATURAL JOIN  Nutrient n
+          JOIN Food f ON f.food_id
+          WHERE f.name='Asparagus' OR f.name LIKE '%Asparagus%'
+          AND fn.food_id=f.food_id
+          GROUP BY f.food_id;
+          */
+          String sqlStr = "SELECT f.name AS name, "
+          + "f.food_id AS food_id,  "
+          + "GROUP_CONCAT(n.name SEPARATOR ', ') AS Nutrients  "
+          + "FROM Food_has_Nutrient fn NATURAL JOIN  Nutrient n  "
+          + "JOIN Food f ON f.food_id WHERE  ";
+          if (hasFname)
+              sqlStr += "f.name='" + fname + "'   ";
+          if (hasFsearch) {
+              if (hasFname) 
+                  sqlStr += " OR ";
+              sqlStr += "f.name LIKE '%" + fsearchW.trim() + "%'  ";
+          } 
+          sqlStr += "AND fn.food_id=f.food_id "
+          + "GROUP BY f.food_id";
           System.out.println(sqlStr);  // for debugging
           ResultSet rset = stmt.executeQuery(sqlStr);
 
@@ -73,27 +94,48 @@ public class SearchServlet extends HttpServlet
              + "<th>Food</th>\n"
              + "<th>Add</th>\n"
              + "<th>Delete</th>\n"
+             + "<th>Nutrient Info</th>\n"
              + "</tr>\n";
   			
-             // ResultSet's cursor now pointing at first row
+            // ResultSet's cursor now pointing at first row
             do {
                 String id = rset.getString("food_id");
+                String nutrient_info = rset.getString("Nutrients"); 
+
                 htmlStr += "<tr>\n"
                 + "<td>" + rset.getString("name") + "</td>\n"
                 + "<td><form method='get' action='gCard'>\n"
                 + "<input type='hidden' name='todo' value='addF'/>\n"
                 + "<input type='hidden' name='id' value='" + id + "'/>\n"
-                + "<input type='submit' value='+'/>\n"
+                + "<input type='submit' value='[+]'/>\n"
                 + "</form></td>\n"
                 + "<td><form method='get' action='gCard'>\n"
                 + "<input type='hidden' name='todo' value='delF'/>\n"
                 + "<input type='hidden' name='id' value='" + id + "'/>\n"
-                + "<input type='submit' value='X'/>\n"
-                + "</form></td></tr>\n";
+                + "<input type='submit' value='[x]'/>\n"
+                + "</form></td>\n"
+                + "<td>" + nutrient_info + "</td>\n"
+                + "</tr>\n";
              }  while (rset.next());
              htmlStr += "</table><br/>\n"
-             + "<p><a href='food'>Select More Food</a></p>\n";
-
+             + "<p><a href='food'>Select More Food</a></p>\n"
+             + "</body></html>\n";
+            /*
+            htmlStr += "<form method='get' action='gCard'>\n";
+            do {
+                String id = rset.getString("food_id");
+                htmlStr += "<tr>\n"
+                + "<td>" + rset.getString("name") + "</td>\n"
+                + "<td><input type='checkbox' name='addF' id='addF'/></td>\n"
+                + "<td><input type='checkbox' name='delF' id='delF'/></td>\n"
+                + "<input type='hidden' name='id' id='id' value='" + id + "'/>"
+                + "</tr>\n";
+             }  while (rset.next());
+             htmlStr += "</table><br/>\n"
+             + "<p><input type='submit' value='Save'></form></p>\n"
+             + "<p><a href='food'>Select More Food</a></p>\n"
+             + "</body></html>\n";
+             */
              
              HttpSession session = request.getSession(false); // check if session exists
              if (session != null) {
@@ -111,6 +153,7 @@ public class SearchServlet extends HttpServlet
           }
        } catch (SQLException ex) {
           out.println("<h3>Service not available. Please try again later!</h3></body></html>");
+          System.out.println(ex.toString());
        } finally {
           out.close();
           try {
