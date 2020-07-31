@@ -34,10 +34,10 @@ public class DishGroceryCardServlet extends HttpServlet {
       GroceryCard gCard;
       synchronized (session) {  // synchronized to prevent concurrent updates
          // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-         gCard = (GroceryCard) session.getAttribute("gCard");
+         gCard = (GroceryCard) session.getAttribute("dgCard");
          if (gCard == null) {
             gCard = new GroceryCard();
-            session.setAttribute("gCard", gCard);  // Save it into session
+            session.setAttribute("dgCard", gCard);  // Save it into session
          }
       }
 
@@ -55,19 +55,22 @@ public class DishGroceryCardServlet extends HttpServlet {
          + "<h2>Dish Grocery List Edit</h2>\n";
 
          String[] ids = request.getParameterValues("addF");
-         for (String id : ids) {
-            sqlStr = "SELECT * FROM Food WHERE food_id = " + id;
-            System.out.println(sqlStr);  // for debugging
-            rset = stmt.executeQuery(sqlStr);
-            rset.next(); // Expect only one row in ResultSet
-            String name = rset.getString("name");
-            int idInt = rset.getInt("food_id");
-            gCard.add(idInt, name);
+         if (ids != null) {
+            for (String id : ids) {                                 
+               sqlStr = "SELECT * FROM Food WHERE food_id = " + id;
+               System.out.println(sqlStr);  // for debugging
+               rset = stmt.executeQuery(sqlStr);
+               rset.next(); // Expect only one row in ResultSet
+               String name = rset.getString("name");
+               int idInt = rset.getInt("food_id");
+               gCard.add(idInt, name);
+            }
          }
 
          String[] ids2 = request.getParameterValues("delF");
-         for (String id : ids2) {
-            gCard.remove(Integer.parseInt(id));
+         if (ids2 != null) {
+            for (String id : ids2) 
+                gCard.remove(Integer.parseInt(id));
          } 
  
          // All cases - Always display the shopping cart

@@ -80,6 +80,7 @@ public class DishSearchServlet extends HttpServlet
              + "</tr>\n";
   			
              // ResultSet's cursor now pointing at first row
+             /*
             do {
                 String id = rset.getString("food_id");
                 htmlStr += "<tr>\n"
@@ -97,6 +98,20 @@ public class DishSearchServlet extends HttpServlet
              }  while (rset.next());
              htmlStr += "</table><br/>\n"
              + "<p><a href='dish'>Select More Dish</a></p>\n";
+             */
+
+            htmlStr += "<form method='get' action='dgCard'>\n";
+            do {
+                String id = rset.getString("food_id");
+                htmlStr += "<tr>\n"
+                + "<td>" + rset.getString("name") + "</td>\n"
+                + "<td><input type='checkbox' name='addF' value='" + id + "'/></td>\n"
+                + "<td><input type='checkbox' name='delF' value='" + id + "'/></td>\n"
+                + "</tr>\n";
+             }  while (rset.next());
+             htmlStr += "</table><br/>\n"
+             + "<p><input type='submit' value='Save'></form></p>\n"
+             + "</body></html>\n";
 
              
              HttpSession session = request.getSession(false); // check if session exists
@@ -104,9 +119,9 @@ public class DishSearchServlet extends HttpServlet
                 GroceryCard gCard;
                 synchronized (session) {
                    // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-                   gCard = (GroceryCard) session.getAttribute("gCard");
+                   gCard = (GroceryCard) session.getAttribute("dgCard");
                    if (gCard != null && !gCard.isEmpty()) {
-                      htmlStr += "<p><a href='gCard?todo=view'>Grocery List</a></p>\n";
+                      htmlStr += "<p><a href='dgCard?todo=view'>Grocery List</a></p>\n";
                    }
                 }
              }
