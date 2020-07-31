@@ -41,6 +41,13 @@ public class UserGroceryListServlet extends HttpServlet {
          }
       }
 
+      //////////////////////////////
+      // check user logged in session
+      //////////////////////////////
+      String userID="100";
+      String glistID="210";
+      //////////////////////////////
+
       Connection conn   = null;
       Statement  stmt   = null;
       ResultSet  rset   = null;
@@ -62,17 +69,26 @@ public class UserGroceryListServlet extends HttpServlet {
             + "<tr>\n"
             + "<th>Food</th>\n";
 
+            sqlStr = "INSERT INTO Food_lists_GroceryList VALUES ";
+            int i = 0;
             for (GroceryCardItem item : gCard.getItems()) {
+               i += 1;
                int id = item.getId();
                String name = item.getName();
                htmlStr += "<tr><td>" + name + "</td>\n";
+               if (i < gCard.size())
+            	    sqlStr += "(" + id + ", " + glistID + "),";
+               else
+                    sqlStr += "(" + id + ", " + glistID + ")";
+
             }
             htmlStr += "</tr></table>\n";
          }
-         htmlStr += "<p><a href='/'>Return to Home</a></p>\n"
+         htmlStr += "<p><a href='/GNTmarket/'>Return to Home</a></p>\n"
          + "</body></html>\n";
-
          out.println(htmlStr);
+         System.out.println(sqlStr);
+         stmt.executeUpdate(sqlStr);
 
       } catch (SQLException ex) {
          out.println("<h3>Service not available. Please try again later!</h3></body></html>");
