@@ -71,7 +71,7 @@ public class DishServlet extends HttpServlet {
                // Retrieve the shopping cart for this session, if any. Otherwise, create one.
                gCard = (GroceryCard) session.getAttribute("gCard");
                if (gCard != null && !gCard.isEmpty()) {
-                  htmlStr += "<P><a href='gCard?todo=view'>Grocery List</a></p>\n";
+                  htmlStr += "<P><a href='dgCard?todo=view'>Grocery List</a></p>\n";
                }
             }
          }

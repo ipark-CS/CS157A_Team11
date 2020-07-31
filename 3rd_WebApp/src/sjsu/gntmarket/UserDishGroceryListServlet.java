@@ -8,12 +8,12 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
-public class DishGroceryCardServlet extends HttpServlet {
+public class UserDishGroceryListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private String dbURL, dbUser, dbPassword;
 
-	public DishGroceryCardServlet() {
+	public UserDishGroceryListServlet() {
 		super();
 	}
 
@@ -52,54 +52,24 @@ public class DishGroceryCardServlet extends HttpServlet {
          stmt = conn.createStatement();
 
          String htmlStr = "<html><head><title>GNT-market</title></head><body>\n"
-         + "<h2>Dish Grocery List Edit</h2>\n";
+         + "<h2>User Dish Grocery List</h2>\n";
 
-         String[] ids = request.getParameterValues("addF");
-         if (ids != null) {
-            for (String id : ids) {                                 
-               sqlStr = "SELECT * FROM Food WHERE food_id = " + id;
-               System.out.println(sqlStr);  // for debugging
-               rset = stmt.executeQuery(sqlStr);
-               rset.next(); // Expect only one row in ResultSet
-               String name = rset.getString("name");
-               int idInt = rset.getInt("food_id");
-               gCard.add(idInt, name);
-            }
-         }
-
-         String[] ids2 = request.getParameterValues("delF");
-         if (ids2 != null) {
-            for (String id : ids2) 
-                gCard.remove(Integer.parseInt(id));
-         } 
- 
          // All cases - Always display the shopping cart
          if (gCard.isEmpty()) {
             out.println("<p>Your Grocery List is empty</p>");
          } else {
             htmlStr += "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"
-            + "<th>Food</th>\n"
-            + "<th>Preference</th>\n";
+            + "<th>Food</th>\n";
 
             for (GroceryCardItem item : gCard.getItems()) {
                int id = item.getId();
                String name = item.getName();
-
-               
-               htmlStr += "<tr>\n"
-               + "<td>" + name + "</td>"
-               + "<td><form method='get' action='dgCard'>\n"
-               + "<input type='hidden' name='id' value='" + id + "'/>\n"
-               + "<label><input type='radio' name='todo' value='likeF'/>Like</label>\n"
-               + "<label><input type='radio' name='todo' value='avoidF'/>Avoid</label>\n"
-               + "<input type='submit' value='update'>\n"
-               + "</td></form>\n";
+               htmlStr += "<tr><td>" + name + "</td>\n";
             }
             htmlStr += "</tr></table>\n";
          }
-         htmlStr += "<p><a href='food'>Select More Food</a></p>\n"
-         + "<p><form method='get' action='userdishGlist'><input type='submit' value='Save'></form></p>\n"
+         htmlStr += "<p><a href='/GNTmarket/'>Return to Home</a></p>\n"
          + "</body></html>\n";
 
          out.println(htmlStr);
