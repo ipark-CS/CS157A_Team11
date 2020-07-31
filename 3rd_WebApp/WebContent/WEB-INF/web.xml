@@ -78,6 +78,16 @@
 
 
     <servlet>
+        <servlet-name>DishGroceryCardServlet</servlet-name>
+        <servlet-class>sjsu.gntmarket.DishGroceryCardServlet</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>DishGroceryCardServlet</servlet-name>
+        <url-pattern>/dgCard</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>GroceryCardServlet</servlet-name>
         <servlet-class>sjsu.gntmarket.GroceryCardServlet</servlet-class>
     </servlet>
