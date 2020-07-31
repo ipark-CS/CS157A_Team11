@@ -7,10 +7,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.sql.*;
 
-public class SearchServlet extends HttpServlet 
+public class DishSearchServlet extends HttpServlet 
 {
     private String dbURL, dbUser, dbPassword;
-    public SearchServlet() 
+    public DishSearchServlet() 
     {
         super();
     }
@@ -40,10 +40,10 @@ public class SearchServlet extends HttpServlet
        Statement stmt = null;
   
        try {
-          String fname = request.getParameter("fname");
-          String fsearchW = request.getParameter("fsearch").trim();
-          boolean hasFname = fname != null && !fname.equals("Select Food");
-          boolean hasFsearch = fsearchW != null && (fsearchW.length() > 0);
+          String dname = request.getParameter("dname");
+          String dsearchW = request.getParameter("dsearch").trim();
+          boolean hasDname = dname != null && !dname.equals("Select Food");
+          boolean hasDsearch = dsearchW != null && (dsearchW.length() > 0);
 
           String htmlStr="<html><head><title>GNT-market</title></head><body>\n"
           + "<h2>Query Result</h2>\n";
@@ -51,15 +51,19 @@ public class SearchServlet extends HttpServlet
           conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
           stmt = conn.createStatement();
 
-          String sqlStr = "SELECT * FROM Food WHERE ";
-                                                                                 
-          if (hasFname)
-              sqlStr += "name = '" + fname + "' ";
-          if (hasFsearch) {
-              if (hasFname) 
+          String sqlStr = "SELECT * "
+          + "FROM Food f, dish_has_food df, dish d "
+          + "WHERE df.dish_id IN (SELECT dish_id FROM dish WHERE ";
+          if (hasDname)
+              sqlStr += "name = '" + dname + "' ";
+          if (hasDsearch) {
+              if (hasDname) {
                   sqlStr += " OR ";
-              sqlStr += "name LIKE '%" + fsearchW.trim() + "%' ORDER BY name";
+              }
+              sqlStr += "name LIKE '%" + dsearchW.trim() + "%')";
           } 
+          sqlStr += "AND f.food_id=df.food_id "
+          + "AND d.dish_id=df.dish_id)";
           System.out.println(sqlStr);  // for debugging
           ResultSet rset = stmt.executeQuery(sqlStr);
 
@@ -83,16 +87,16 @@ public class SearchServlet extends HttpServlet
                 + "<td><form method='get' action='gCard'>\n"
                 + "<input type='hidden' name='todo' value='addF'/>\n"
                 + "<input type='hidden' name='id' value='" + id + "'/>\n"
-                + "<input type='submit' value='+'/>\n"
+                + "<input type='submit' value='[+]'/>\n"
                 + "</form></td>\n"
                 + "<td><form method='get' action='gCard'>\n"
                 + "<input type='hidden' name='todo' value='delF'/>\n"
                 + "<input type='hidden' name='id' value='" + id + "'/>\n"
-                + "<input type='submit' value='X'/>\n"
+                + "<input type='submit' value='[x]'/>\n"
                 + "</form></td></tr>\n";
              }  while (rset.next());
              htmlStr += "</table><br/>\n"
-             + "<p><a href='food'>Select More Food</a></p>\n";
+             + "<p><a href='dish'>Select More Dish</a></p>\n";
 
              
              HttpSession session = request.getSession(false); // check if session exists
@@ -110,6 +114,7 @@ public class SearchServlet extends HttpServlet
              out.println(htmlStr);
           }
        } catch (SQLException ex) {
+          out.println(ex.toString());
           out.println("<h3>Service not available. Please try again later!</h3></body></html>");
        } finally {
           out.close();
