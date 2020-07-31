@@ -41,6 +41,11 @@ public class DishGroceryCardServlet extends HttpServlet {
          }
       }
 
+      //////////////////////////////
+      // check user logged in session
+      //////////////////////////////
+      String userID="100";
+      
       Connection conn   = null;
       Statement  stmt   = null;
       ResultSet  rset   = null;
@@ -73,6 +78,28 @@ public class DishGroceryCardServlet extends HttpServlet {
                 gCard.remove(Integer.parseInt(id));
          } 
  
+         String todo = request.getParameter("todo");
+         if (todo != null) {
+            if (todo.equals("avoidF")) {                                                
+               String id = request.getParameter("id");  // Only one id for remove case
+               //sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
+               sqlStr = "UPDATE user_marks_food "
+               + "SET is_restricted=1, is_favorite=0 "
+               + "WHERE food_id='" + id + "' "
+               + "AND user_id = '" + userID + "'";
+               System.out.println(sqlStr);  // for debugging
+               stmt.executeUpdate(sqlStr);
+            } else if (todo.equals("likeF")) {
+               String id = request.getParameter("id");  // Only one id for remove case
+               sqlStr = "UPDATE user_marks_food "
+               + "SET is_restricted=0, is_favorite=1 "
+               + "WHERE food_id='" + id + "' "
+               + "AND user_id = '" + userID + "'";
+               System.out.println(sqlStr);  // for debugging
+               stmt.executeUpdate(sqlStr);
+            }
+         }
+
          // All cases - Always display the shopping cart
          if (gCard.isEmpty()) {
             out.println("<p>Your Grocery List is empty</p>");
@@ -98,7 +125,7 @@ public class DishGroceryCardServlet extends HttpServlet {
             }
             htmlStr += "</tr></table>\n";
          }
-         htmlStr += "<p><a href='food'>Select More Food</a></p>\n"
+         htmlStr += "<p><a href='dish'>Select More Dish</a></p>\n"
          + "<p><form method='get' action='userdishGlist'><input type='submit' value='Save'></form></p>\n"
          + "</body></html>\n";
 
