@@ -41,6 +41,11 @@ public class GroceryCardServlet extends HttpServlet {
          }
       }
 
+      //////////////////////////////
+      // check user logged in session
+      //////////////////////////////
+      String userID="100";
+
       Connection conn   = null;
       Statement  stmt   = null;
       ResultSet  rset   = null;
@@ -55,7 +60,7 @@ public class GroceryCardServlet extends HttpServlet {
          + "<h2>Grocery List Edit</h2>\n";
 
          String todo = request.getParameter("todo");
-         //if (todo == null) todo = "view";  // to prevent null pointer
+         if (todo == null) todo = "view";  // to prevent null pointer
 
          if (todo.equals("addF")) {
             String[] ids = request.getParameterValues("id");
@@ -79,12 +84,19 @@ public class GroceryCardServlet extends HttpServlet {
             gCard.remove(Integer.parseInt(id));
          } else if (todo.equals("avoidF")) {
             String id = request.getParameter("id");  // Only one id for remove case
-            sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
+            //sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
+            sqlStr = "UPDATE user_marks_food "
+            + "SET is_restricted=1, is_favorite=0 "
+            + "WHERE food_id='" + id + "' "
+            + "AND user_id = '" + userID + "'";
             System.out.println(sqlStr);  // for debugging
             stmt.executeUpdate(sqlStr);
          } else if (todo.equals("likeF")) {
             String id = request.getParameter("id");  // Only one id for remove case
-            sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 0, 1)";
+            sqlStr = "UPDATE user_marks_food "
+            + "SET is_restricted=0, is_favorite=1 "
+            + "WHERE food_id='" + id + "' "
+            + "AND user_id = '" + userID + "'";
             System.out.println(sqlStr);  // for debugging
             stmt.executeUpdate(sqlStr);
          }
@@ -96,13 +108,22 @@ public class GroceryCardServlet extends HttpServlet {
             htmlStr += "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"
             + "<th>Food</th>\n"
-            + "<th>Preference</th>\n";
+            + "<th>Preference</th>\n"
+            + "<th>Nutrient Info</th>\n";
 
             for (GroceryCardItem item : gCard.getItems()) {
                int id = item.getId();
                String name = item.getName();
 
-               
+               String sqlStr2 = "SELECT GROUP_CONCAT(n.name SEPARATOR ', ') AS Nutrients\n"
+               + "FROM Food_has_Nutrient fn NATURAL JOIN  Nutrient n\n"
+               + "WHERE fn.food_id=" + id + "\n"
+               + "AND fn.nutrient_id=n.nutrient_id\n"
+               + "GROUP BY fn.food_id\n";
+               ResultSet rset2 = stmt.executeQuery(sqlStr2);
+               rset2.next(); // Expect only one row in ResultSet
+               String nutrient_info = rset2.getString("Nutrients");
+
                htmlStr += "<tr>\n"
                + "<td>" + name + "</td>"
                + "<td><form method='get' action='gCard'>\n"
@@ -110,7 +131,8 @@ public class GroceryCardServlet extends HttpServlet {
                + "<label><input type='radio' name='todo' value='likeF'/>Like</label>\n"
                + "<label><input type='radio' name='todo' value='avoidF'/>Avoid</label>\n"
                + "<input type='submit' value='update'>\n"
-               + "</td></form>\n";
+               + "</td></form>\n"
+               + "<td>" + nutrient_info + "</td>";
             }
             htmlStr += "</tr></table>\n";
          }
