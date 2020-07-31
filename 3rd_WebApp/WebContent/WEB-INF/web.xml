@@ -108,6 +108,17 @@
         <url-pattern>/userGlist</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>UserDishGroceryListServlet</servlet-name>
+        <servlet-class>sjsu.gntmarket.UserDishGroceryListServlet</servlet-class>
+    </servlet>
+ 
+    <servlet-mapping>
+        <servlet-name>UserDishGroceryListServlet</servlet-name>
+        <url-pattern>/userdishGlist</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/error.jsp</location>
