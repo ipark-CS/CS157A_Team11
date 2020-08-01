@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class CreateUserServlet
@@ -109,11 +110,18 @@ public class UserServlet extends HttpServlet {
 	     String password = request.getParameter("password");
 	     String name = request.getParameter("name");
 	     
-	     System.out.println("Email: " + email + ", Pass: " + password + ", Name: " + name);
-	     
 	     User newUser = new User(email, password, name);
 	     userDAO.createUser(newUser);
-	     response.sendRedirect("user-list");
+	     
+	     int newUserID = userDAO.restoreUserID(email, password);
+	     
+	     newUser.setId(newUserID);
+	     
+	     HttpSession session = request.getSession();
+		 session.setAttribute("currentUser", newUser);
+	     
+		 RequestDispatcher dispatcher = request.getRequestDispatcher("/home");
+		dispatcher.forward(request, response);
 		
 	}
 
@@ -143,7 +151,12 @@ public class UserServlet extends HttpServlet {
 	    
 	    request.setAttribute("currentUser", returningUser);
 	    
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("grocerylist.jsp");
+	    HttpSession session = request.getSession();
+	    session.setAttribute("currentUser", returningUser);
+	    
+	    //response.sendRedirect("grocerylist.jsp");
+	    
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/gCard");
 		dispatcher.forward(request, response);
 		
 	}

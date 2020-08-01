@@ -63,6 +63,39 @@ public class UserDAO {
     	return userCreated;
     }
     
+    public int restoreUserID(String email, String password) throws SQLException{
+    	
+    	String sql = "SELECT user_id FROM users WHERE email = ? AND password = ?";
+    	
+    	mysqlConnect();
+    	
+    	PreparedStatement statement = dbCon.prepareStatement(sql);
+    	statement.setString(1, email);
+    	statement.setString(2, password);
+    	
+    	ResultSet rs = statement.executeQuery();
+    	
+    	int userID = 0;
+    	
+    	while(rs.next()) {
+    		userID = rs.getInt("user_id");
+    	}
+    	
+    	if (userID != 0) {
+    		System.out.println("UserID " + userID + " found!");
+    	}
+    	else {
+    		System.out.println("User not found");
+    	}
+    	
+    	rs.close();
+    	statement.close();
+    	
+    	mysqlDisconnect();
+    	
+    	return userID;
+    }
+    
     public List<User> listUsers() throws SQLException {
     	List<User> userList = new ArrayList<User>();
     	

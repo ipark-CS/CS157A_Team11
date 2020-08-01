@@ -13,6 +13,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LoginServlet
+ * 
+ * 
+ * THIS IS NOT USED
+ * 
  */
 @WebServlet("/login-dummy")
 public class LoginServlet extends HttpServlet {

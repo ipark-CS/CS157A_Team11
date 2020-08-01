@@ -58,7 +58,7 @@
   </nav>
   <nav class="my-2 my-md-0 mr-md-3">
     <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
-    <a class="p-2 text-dark" href="index.jsp">Dish</a>
+    <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
     <a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
     <a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
