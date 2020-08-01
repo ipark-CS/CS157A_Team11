@@ -71,34 +71,38 @@ public class UserDishGroceryListServlet extends HttpServlet {
          String htmlStr = "<html><head><title>GNT-market</title></head><body>\n"
          + "<h2>User Dish Grocery List</h2>\n";
 
+
          // All cases - Always display the shopping cart
          if (gCard.isEmpty()) {
             out.println("<p>Your Grocery List is empty</p>");
          } else {
             htmlStr += "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"
-            + "<th>Food</th>\n";
+            + "<th>Food</th>\n"
+            + "<th>Note</th>\n";
 
-            sqlStr = "INSERT INTO Food_lists_GroceryList VALUES ";
-            int i = 0;
             for (GroceryCardItem item : gCard.getItems()) {
-               i += 1;
                int id = item.getId();
                String name = item.getName();
-               htmlStr += "<tr><td>" + name + "</td>\n";
-               if (i < gCard.getItems().size())
-            	    sqlStr += "(" + id + ", " + glistID + "),";
-               else
-                    sqlStr += "(" + id + ", " + glistID + ")";
-
+               sqlStr = "SELECT food_id FROM user_marks_food WHERE " 
+               + "user_id="+ userID + " AND food_id=" + id + " AND "
+               + "is_restricted=1 GROUP BY food_id";
+               System.out.println(sqlStr);
+               
+               ResultSet rset2 = stmt.executeQuery(sqlStr);
+               if (rset2.next()) {
+                    htmlStr += "<tr><td><strike>" + name + "</strike></td>\n"
+                    + "<td> you marked it as dietry restriction!</td>\n";
+               } else {
+                    htmlStr += "<tr><td>" + name + "</td>\n"
+                    + "<td></td>\n";
+               } 
             }
             htmlStr += "</tr></table>\n";
          }
          htmlStr += "<p><a href='/GNTmarket/'>Return to Home</a></p>\n"
          + "</body></html>\n";
          out.println(htmlStr);
-         System.out.println(sqlStr);
-         stmt.executeUpdate(sqlStr);
 
       } catch (SQLException ex) {
          out.println("<h3>Service not available. Please try again later!</h3></body></html>");

@@ -95,21 +95,39 @@ public class GroceryCardServlet extends HttpServlet {
             gCard.remove(Integer.parseInt(id));
          } else if (todo.equals("avoidF")) {
             String id = request.getParameter("id");  // Only one id for remove case
+            sqlStr = "REPLACE INTO user_marks_food VALUES (" 
+            + userID + ", "  // user_id
+            + id + ", "      // food_id
+            + "1, "          // is_restricted
+            + "0)";          // is_favorite
+            System.out.println(sqlStr);  // for debugging
+            stmt.executeUpdate(sqlStr);
             //sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
+            /*
             sqlStr = "UPDATE user_marks_food "
             + "SET is_restricted=1, is_favorite=0 "
             + "WHERE food_id='" + id + "' "
             + "AND user_id = '" + userID + "'";
             System.out.println(sqlStr);  // for debugging
             stmt.executeUpdate(sqlStr);
+            */
          } else if (todo.equals("likeF")) {
             String id = request.getParameter("id");  // Only one id for remove case
+            sqlStr = "REPLACE INTO user_marks_food VALUES (" 
+            + userID + ", "  // user_id
+            + id + ", "      // food_id
+            + "0, "          // is_restricted
+            + "1)";          // is_favorite
+            System.out.println(sqlStr);  // for debugging
+            stmt.executeUpdate(sqlStr);
+            /*
             sqlStr = "UPDATE user_marks_food "
             + "SET is_restricted=0, is_favorite=1 "
             + "WHERE food_id='" + id + "' "
             + "AND user_id = '" + userID + "'";
             System.out.println(sqlStr);  // for debugging
             stmt.executeUpdate(sqlStr);
+            */
          }
  
          // All cases - Always display the shopping cart
