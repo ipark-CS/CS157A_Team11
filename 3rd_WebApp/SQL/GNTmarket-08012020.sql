@@ -268,10 +268,10 @@ DROP TABLE IF EXISTS `grocerylist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `grocerylist` (
-  `list_id` int NOT NULL,
+  `list_id` int NOT NULL AUTO_INCREMENT,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`list_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,8 +316,9 @@ DROP TABLE IF EXISTS `user_creates_grocerylist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_creates_grocerylist` (
-  `user_id` int DEFAULT NULL,
-  `list_id` int DEFAULT NULL
+  `user_id` int NOT NULL,
+  `list_id` int DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -327,7 +328,6 @@ CREATE TABLE `user_creates_grocerylist` (
 
 LOCK TABLES `user_creates_grocerylist` WRITE;
 /*!40000 ALTER TABLE `user_creates_grocerylist` DISABLE KEYS */;
-INSERT INTO `user_creates_grocerylist` VALUES (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,15),(8,14),(9,13),(10,12),(11,11),(12,10),(13,9),(14,8),(15,7),(NULL,1),(NULL,2),(NULL,3),(NULL,4),(NULL,5),(NULL,6),(NULL,7),(NULL,8),(NULL,9),(NULL,10),(NULL,11),(NULL,12),(NULL,13),(NULL,14),(NULL,15),(NULL,1),(NULL,2),(NULL,3),(NULL,4),(NULL,5),(NULL,6),(NULL,7),(NULL,8),(NULL,9),(NULL,10),(NULL,11),(NULL,12),(NULL,13),(NULL,14),(NULL,15);
 /*!40000 ALTER TABLE `user_creates_grocerylist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,7 +353,7 @@ CREATE TABLE `user_marks_food` (
 
 LOCK TABLES `user_marks_food` WRITE;
 /*!40000 ALTER TABLE `user_marks_food` DISABLE KEYS */;
-INSERT INTO `user_marks_food` VALUES (3,3,1,0),(5,5,1,0),(7,6,0,1),(10,9,0,1),(11,12,1,0),(12,12,0,1),(13,11,1,0),(15,11,1,0),(15,15,0,1),(16,17,1,0);
+INSERT INTO `user_marks_food` VALUES (3,3,1,0),(5,5,1,0),(7,6,0,1),(10,9,0,1),(11,12,1,0),(12,12,0,1),(13,11,1,0),(15,11,1,0),(15,15,0,1),(16,4,1,0),(16,17,1,0),(17,5,1,0),(17,25,1,0);
 /*!40000 ALTER TABLE `user_marks_food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,12 +388,12 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `user_id` int NOT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -402,7 +402,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'testuser1@example.com','passtest123','First Last'),(2,'testuser2@example.com','pass90',NULL),(3,'testuser3@example.com','sqlop90',NULL),(4,'testuser4@example.com','f4fopi5',NULL),(5,'testuser5@example.com','fiver',NULL),(6,'testuser6@example.com','qrghbdsed52',NULL),(7,'testuser7@example.com','septem',NULL),(8,'testuser8@example.com','passtest123',NULL),(9,'testuser9@example.com','sjsucs157a',NULL),(10,'testuser10@example.com','encrypted',NULL),(11,'testuser11@example.com','password',NULL),(12,'testuser12@example.com','defend',NULL),(13,'testuser13@example.com','the',NULL),(14,'testuser14@example.com','east',NULL),(15,'inhee@sjsu.edu','team11','inhee'),(16,'park@sjsu.edu','team11','park');
+INSERT INTO `users` VALUES (1,'testuser1@example.com','passtest123','First Last'),(2,'testuser2@example.com','pass90',NULL),(3,'testuser3@example.com','sqlop90',NULL),(4,'testuser4@example.com','f4fopi5',NULL),(5,'testuser5@example.com','fiver',NULL),(6,'testuser6@example.com','qrghbdsed52',NULL),(7,'testuser7@example.com','septem',NULL),(8,'testuser8@example.com','passtest123',NULL),(9,'testuser9@example.com','sjsucs157a',NULL),(10,'testuser10@example.com','encrypted',NULL),(11,'testuser11@example.com','password',NULL),(12,'testuser12@example.com','defend',NULL),(13,'testuser13@example.com','the',NULL),(14,'testuser14@example.com','east',NULL),(15,'inhee@sjsu.edu','team11','inhee'),(16,'park@sjsu.edu','team11','park'),(17,'team11@sjsu.edu','team11','Team11');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -415,4 +415,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-01  1:40:16
+-- Dump completed on 2020-08-01 13:56:02
