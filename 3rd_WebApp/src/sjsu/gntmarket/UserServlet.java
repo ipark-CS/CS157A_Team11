@@ -120,8 +120,8 @@ public class UserServlet extends HttpServlet {
 	     HttpSession session = request.getSession();
 		 session.setAttribute("currentUser", newUser);
 	     
-		 RequestDispatcher dispatcher = request.getRequestDispatcher("/home");
-		dispatcher.forward(request, response);
+		 RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		 dispatcher.forward(request, response);
 		
 	}
 
@@ -156,7 +156,7 @@ public class UserServlet extends HttpServlet {
 	    
 	    //response.sendRedirect("grocerylist.jsp");
 	    
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("/gCard");
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 		
 	}

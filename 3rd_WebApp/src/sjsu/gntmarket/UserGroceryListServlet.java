@@ -32,6 +32,7 @@ public class UserGroceryListServlet extends HttpServlet {
       // Retrieve current HTTPSession object. If none, create one.
       HttpSession session = request.getSession(true);
       GroceryCard gCard;
+      User currentUser;
       synchronized (session) {  // synchronized to prevent concurrent updates
          // Retrieve the shopping cart for this session, if any. Otherwise, create one.
          gCard = (GroceryCard) session.getAttribute("gCard");
@@ -39,12 +40,22 @@ public class UserGroceryListServlet extends HttpServlet {
             gCard = new GroceryCard();
             session.setAttribute("gCard", gCard);  // Save it into session
          }
+         
+         currentUser = (User)session.getAttribute("currentUser");
+
+         if (currentUser == null) {
+        	 System.out.println("No user found");
+         }
+         else {
+        	 System.out.println("Hello, " + currentUser.getName() + " - ID: " + currentUser.getId());
+         }
       }
 
       //////////////////////////////
       // check user logged in session
       //////////////////////////////
-      String userID="100";
+      //String userID="100";
+      String userID = String.valueOf(currentUser.getId());
       String glistID="210";
       //////////////////////////////
 
