@@ -40,9 +40,9 @@ public class GroceryCardServlet extends HttpServlet {
             gCard = new GroceryCard();
             session.setAttribute("gCard", gCard);  // Save it into session
          }
-         
+
          currentUser = (User)session.getAttribute("currentUser");
-         
+
          if (currentUser == null) {
         	 System.out.println("No user found");
          }

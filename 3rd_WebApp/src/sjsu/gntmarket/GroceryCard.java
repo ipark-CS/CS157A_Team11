@@ -38,6 +38,10 @@ public class GroceryCard {
       }
    }
 
+
+   public int size() {
+      return gCard.size();
+   }
    public boolean isEmpty() {
       return gCard.size() == 0;
    }
