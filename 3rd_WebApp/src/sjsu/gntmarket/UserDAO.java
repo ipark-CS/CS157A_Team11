@@ -29,7 +29,7 @@ public class UserDAO {
         try{
             Class.forName(driver);
             dbCon = DriverManager.getConnection(dbURL, dbUser, dbPassword);
-            System.out.println("Successfully connected to database.");
+            System.out.println("Successfully connected to database from UserDAO");
             }
         catch(ClassNotFoundException e){
             System.err.println("Couldn't load driver.");

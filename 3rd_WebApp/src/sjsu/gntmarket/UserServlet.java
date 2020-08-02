@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
  * Servlet implementation class CreateUserServlet
  */
 public class UserServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	private UserDAO userDAO;
 
@@ -60,6 +61,7 @@ public class UserServlet extends HttpServlet {
 
 		try {
 			switch (action) {
+			
 			case "/home":
 				returnToHome(request, response);
 				break;
@@ -91,6 +93,7 @@ public class UserServlet extends HttpServlet {
 	
 	public void listUser(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
+		
 		List<User> userList = userDAO.listUsers();
 		
 		System.out.println("Before Index Dispatch, list count: " + userList.size());

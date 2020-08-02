@@ -1,4 +1,8 @@
 <%@ page import="java.sql.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page isELIgnored="false" %>
   
 <html lang="en">
 <head>
@@ -46,64 +50,15 @@
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal">GNT-Market</h5>
   <nav class="my-2 my-md-0 mr-md-3">
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search Food</button>
-    </form>
+    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
+    
+    <c:if test="${currentUser != null}">
+        <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
+    	<a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
+    	<a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
+    </c:if>
   </nav>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="dish.jsp">Dish</a>
-    <a class="p-2 text-dark" href="food.jsp">Food</a>
-    <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
-    <a class="p-2 text-dark" href="bodysystem.jsp#">BodySystem</a>
-  </nav>
-  <a class="btn btn-outline-primary" href="#">Login</a>
-</div>
-
-<main role="main" class="container">
-
   
-   <% 
-     String db = "GNTmarket";
-        String user; // assumes database name is the same as username
-          user = "root";
-          String password = "Summer2020~";
-        try {
-            
-            java.sql.Connection con; 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url="jdbc:mysql://localhost:3306/" + db + "?serverTimezone=UTC";
-            con = DriverManager.getConnection(url, user, password);
-            out.println(db + " database successfully opened.<br/><br/>");
-            
-            String tableName = "Food";
-        	%>
-        	<div class="list-group">
-        	
-            <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " table fetched"%>
-           </button>
-           	<%
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-            while (rs.next()) {
-            	%>
-            	<button type="button" class="list-group-item list-group-item-action">
-            	<%=rs.getInt(1) + " " + rs.getString(2)%>
-            	 </button>
-				<%
-            }
-            rs.close();
-            stmt.close();
-            con.close();
-        } catch(SQLException e) { 
-            out.println("SQLException caught: " + e.getMessage()); 
-        }
-    %>
- 
-
 </div>
-
-</main><!-- /.container -->
-
-</body></html>
+</body>
+</html>

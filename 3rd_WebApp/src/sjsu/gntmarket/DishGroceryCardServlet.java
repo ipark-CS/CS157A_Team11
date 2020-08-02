@@ -42,6 +42,8 @@ public class DishGroceryCardServlet extends HttpServlet {
          }
          
          currentUser = (User)session.getAttribute("currentUser");
+         
+         System.out.print("(Inside DishGroceryCardServlet - doGet()) ");
 
          if (currentUser == null) {
         	 System.out.println("No user found");

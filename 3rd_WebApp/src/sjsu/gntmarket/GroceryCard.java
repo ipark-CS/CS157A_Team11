@@ -38,7 +38,6 @@ public class GroceryCard {
       }
    }
 
-
    public int size() {
       return gCard.size();
    }

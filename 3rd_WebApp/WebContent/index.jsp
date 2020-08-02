@@ -51,21 +51,24 @@
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal">GNT-Market</h5>
   <nav class="my-2 my-md-0 mr-md-3">
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search Food</button>
-    </form>
-  </nav>
-  <nav class="my-2 my-md-0 mr-md-3">
     <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
-    <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
-    <a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
-    <a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
+    
+    <c:if test="${currentUser != null}">
+        <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
+    	<a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
+    	<a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
+    </c:if>
+    
     <a class="p-2 text-dark" href="nutrient.jsp">Nutrient</a>
     <a class="p-2 text-dark" href="bodysystem.jsp">BodySystem</a>
-    <a class="p-2 text-dark" href="/GNTmarket/new-account">Create Account</a>
-    <a class="p-2 text-dark" href="/GNTmarket/login">Login</a>
+    
+    <c:if test="${currentUser == null}">  
+   		<a class="p-2 text-dark" href="/GNTmarket/new-account">Create Account</a>
+   		<a class="p-2 text-dark" href="/GNTmarket/login">Login</a>
+   	</c:if>
+   	
     <a class="p-2 text-dark" href="/GNTmarket/user-list">User Test Page</a>
+  
   </nav>
   
 </div>
@@ -76,4 +79,6 @@
     		<h2>Hello, <c:out value="${currentUser.name}"></c:out>!</h2>
     	</c:if>
     </div>
-</body></html>
+</body>
+
+</html>

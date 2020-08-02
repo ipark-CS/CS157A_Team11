@@ -42,6 +42,8 @@ public class UserGroceryListServlet extends HttpServlet {
          }
          
          currentUser = (User)session.getAttribute("currentUser");
+         
+         System.out.print("(Inside UserGroceryListServlet - doGet()) ");
 
          if (currentUser == null) {
         	 System.out.println("No user found");
@@ -108,8 +110,9 @@ public class UserGroceryListServlet extends HttpServlet {
             // Step1) create a grocerylist
             //        AND get grocery list ID (list_id)
             sqlStr = "INSERT INTO grocerylist (date) VALUES(now());";
-            stmt.executeUpdate(sqlStr);
             System.out.println(sqlStr);
+            stmt.executeUpdate(sqlStr);
+            
 
             // get glistID
             sqlStr = "SELECT list_id FROM grocerylist ORDER BY  list_id DESC LIMIT 1";
