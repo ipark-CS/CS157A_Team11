@@ -56,18 +56,17 @@ public class UserGroceryListServlet extends HttpServlet {
       //////////////////////////////
       //String userID="100";
       String userID = String.valueOf(currentUser.getId());
-      String glistID="210";
       //////////////////////////////
 
       Connection conn   = null;
       Statement  stmt   = null;
-      ResultSet  rset   = null;
       String     sqlStr = null;
 
 
       try {
          conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
          stmt = conn.createStatement();
+
 
          String htmlStr = "<html><head><title>GNT-market</title></head><body>\n"
          + "<h2>User Grocery List</h2>\n";
@@ -81,21 +80,6 @@ public class UserGroceryListServlet extends HttpServlet {
             + "<th>Food</th>\n"
             + "<th>Note</th>\n";
 
-            /*
-            sqlStr = "INSERT INTO Food_lists_GroceryList VALUES ";
-            int i = 0;
-            for (GroceryCardItem item : gCard.getItems()) {
-               i += 1;
-               int id = item.getId();
-               String name = item.getName();
-               htmlStr += "<tr><td>" + name + "</td>\n";
-               if (i < gCard.size())
-            	    sqlStr += "(" + id + ", " + glistID + "),";
-               else
-                    sqlStr += "(" + id + ", " + glistID + ")";
-            }
-            htmlStr += "</tr></table>\n";
-            */
             for (GroceryCardItem item : gCard.getItems()) {
                int id = item.getId();
                String name = item.getName();
@@ -114,13 +98,57 @@ public class UserGroceryListServlet extends HttpServlet {
                } 
             }
             htmlStr += "</tr></table>\n";
-         }
-         htmlStr += "<p><a href='/GNTmarket/'>Return to Home</a></p>\n"
-         + "</body></html>\n";
-         out.println(htmlStr);
 
+            // ARCHIVE TO DB
+            // Table1) grocerylist (list_id, date)
+            // Table2) user_creates_grocerylist (user_id, list_id)
+            // Taboe3) Food_lists_GroceryList (food_id, list_id)
+            //
+            //                                                            
+            // Step1) create a grocerylist
+            //        AND get grocery list ID (list_id)
+            sqlStr = "INSERT INTO grocerylist (date) VALUES(now());";
+            stmt.executeUpdate(sqlStr);
+            System.out.println(sqlStr);
+
+            // get glistID
+            sqlStr = "SELECT list_id FROM grocerylist ORDER BY  list_id DESC LIMIT 1";
+            ResultSet rset = stmt.executeQuery(sqlStr);
+            rset.next();
+            String glistID = rset.getString("list_id");
+            System.out.println("glistID=" + glistID);
+            
+            // Step2) user create a grocerylist (user_id, list_id)
+            //        where user_id shouldn't be primary key, because user can
+            //        have multiple grocerylist, thus should accept duplicate user_id
+            //        with different list_id
+            //
+            sqlStr = "INSERT INTO user_creates_grocerylist (user_id, list_id) "
+            + "VALUES (" + userID + ", " + glistID + ")";
+            System.out.println(sqlStr);
+            stmt.executeUpdate(sqlStr);
+
+            // Step3) insert food list to grocery list (food_id, list_id)
+            sqlStr = "INSERT INTO Food_lists_GroceryList (food_id, list_id) VALUES ";
+            int i = 0;
+            for (GroceryCardItem item : gCard.getItems()) {
+               i += 1;
+               int id = item.getId();
+               String name = item.getName();
+               if (i < gCard.size())
+            	    sqlStr += "(" + id + ", " + glistID + "),";
+               else
+                    sqlStr += "(" + id + ", " + glistID + ")";
+            }
+            System.out.println(sqlStr);
+            stmt.executeUpdate(sqlStr);
+            htmlStr += "<p><a href='/GNTmarket/'>Return to Home</a></p>\n"
+            + "<p><a href='/GNTmarket/gCard'>Return to GroceryList</a></p>\n"
+            + "</body></html>\n";
+            out.println(htmlStr);
+         }
       } catch (SQLException ex) {
-         out.println("<h3>Service not available. Please try again later!</h3></body></html>");
+         out.println(ex.toString());
       } finally {
          out.close();
 
