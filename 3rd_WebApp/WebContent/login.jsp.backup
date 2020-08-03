@@ -45,11 +45,9 @@
     <!-- Custom styles for this template -->
     <link href="pricing.css" rel="stylesheet">
 	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
-    <link href="https://getbootstrap.com/docs/4.0/examples/sign-in/signin.css" rel="stylesheet">
 </head>
 
-<body class="text-center">
-<!--
+<body>
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
 <h5 class="my-0 mr-md-auto font-weight-normal">
 <a href="#" class="navbar-brand d-flex align-items-center">
@@ -73,30 +71,40 @@
   </nav>
 </div>
 
-<!--
 <main role="main" class="container">
-	<h1>Create New User</h1>
-	<form action="insert" method="post">
-			<label for="name">Name:</label>
-			<input type="text" id="name" name="name" size="30" />
-			<br><br><label for="email">Email:</label>
-			<input type="text" id="email" name="email" size="30" />
+<!--
+	<div style="text-align: center" id = "login-section">
+			<label for="email">Email:</label> 
+			<input type="text" id="email" name="email" size="30">
 			<br><br><label for="pass">Password:</label>
-			<input type="password" id="pass" name="password" size="30"/>
-			<br><br><input type="submit" value = "Create New Account" />
-	</form>
-</main>
+			<input type="password" id="pass" name="password" size="30">
+			<br><br><input type="submit" value = "Login" />
+		</form>
+		<br>
+	</div> 
 -->
-	<form action="insert" method="post" class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Create New User</h1>
-      <label for="name" class="sr-only">Name</label>
-      <input type="text" id="name" name="name" class="form-control" placeholder="Name">
-      <label for="email" class="sr-only">Email address</label>
-      <input type="text" id="email" name="email" class="form-control" placeholder="Email address">
-      <label for="pass" class="sr-only">Password</label>
-      <input type="password" id="pass" name="password" class="form-control" placeholder="Password">
-      <button class="btn btn-lg btn-primary btn-block" type="submit" value="Create New Account" />
-      Create New Account</button>
-      <p class="mt-5 mb-3 text-muted">© GNT-market</p>
-</form>
+
+    xxx
+    <div class="wrapper fadeInDown">
+    <div id="formContent">
+    <!-- Tabs Titles -->
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+    </div>
+    <!-- Login Form -->
+	<h2>User Login</h2>
+	<form action="login-user" method="post">
+      <input type="text" id="email" class="fadeIn second" name="email" placeholder="email">
+      <input type="text" id="pass" class="fadeIn third" name="password" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Login">
+    </form>
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+    </div>
+    </div>
+    xxx
+</main><!-- /.container -->
 </body></html>
