@@ -208,11 +208,12 @@ public class DishGroceryCardServlet extends HttpServlet {
                + "<td>" + name + "</td>"
                + "<td><form method='get' action='dgCard'>\n"
                + "<input type='hidden' name='id' value='" + id + "'/>\n"
-               + "<label><input type='radio' name='todo' value='likeF'/>"
-               + "<i class=\"far fa-thumbs-up\"></i></label>\n"
-               + "<label><input type='radio' name='todo' value='avoidF'/>"
-               + "<i class=\"far fa-thumbs-down\"></i></label>\n"
+               + "<label style=\"color:blue;\"><input type='radio' name='todo' value='likeF'/>"
+               + "<font size=\"+2\"><i class=\"fab fa-gratipay\"></i></font></label>\n"
+               + "<label style=\"color:red;\"><input type='radio' name='todo' value='avoidF'/>"
+               + "<font size=\"+2\"><i class=\"fas fa-exclamation-triangle\"></i></font></label>\n"
                + "<input type='submit' value='update'>\n"
+
                + "</td></form>\n";
             }
             htmlStr += "</tr></table>\n";
