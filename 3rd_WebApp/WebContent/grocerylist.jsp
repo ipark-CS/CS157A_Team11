@@ -92,8 +92,10 @@
 					
                     <td><form method='get' action='gCard'>
                				<input type='hidden' name='id' value="${food.id}"/>
-               				<label><input type='radio' name='todo' value='likeF'/>Like</label>
-               				<label><input type='radio' name='todo' value='avoidF'/>Avoid</label>
+               				<label><input type='radio' name='todo' value='likeF'/>
+                            <i class="far fa-thumbs-up"></i></label>
+               				<label><input type='radio' name='todo' value='avoidF'/>
+                            <i class="far fa-thumbs-down"></i></label>
                				<input type='submit' value='update'>
                		</form></td>
                     
