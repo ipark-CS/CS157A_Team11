@@ -75,7 +75,7 @@
     <div align="center">
     	<h2>
          &nbsp;<i class="fas fa-cheese"></i>
-         &nbsp;<i class="fas fa-apple"></i>
+         &nbsp;<i class="fas fa-carrot"></i>
          &nbsp;<i class="fas fa-pepper-hot"></i>
          &nbsp;<i class="fas fa-bread-slice"></i>
          &nbsp;<i class="fas fa-ice-cream"></i>
