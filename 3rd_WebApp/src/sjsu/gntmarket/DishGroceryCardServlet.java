@@ -111,8 +111,14 @@ public class DishGroceryCardServlet extends HttpServlet {
          conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
          stmt = conn.createStatement();
 
-         String htmlStr = "<html><head><title>GNT-market</title></head><body>\n"
-         + "<h2>Dish Grocery List Edit</h2>\n";
+
+         String htmlStr="<html lang='en'> <head> <meta charset='utf-8'> <title>CS157A-Team11| GNT-Market | Home</title> <!-- css --> <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'> <meta name='description' content=''> <meta name='author' content='Mark Otto, Jacob Thornton, and Bootstrap contributors'> <meta name='generator' content='Jekyll v3.8.5'> <link rel='canonical' href='https://getbootstrap.com/docs/4.3/examples/pricing/'> <!-- Bootstrap core CSS --> <link href='/docs/4.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'> <style> .bd-placeholder-img { font-size: 1.125rem; text-anchor: middle; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } @media (min-width: 768px) { .bd-placeholder-img-lg { font-size: 3.5rem; } } </style> <!-- Custom styles for this template --> <link href='pricing.css' rel='stylesheet'> <script src='https://kit.fontawesome.com/a076d05399.js'></script> </head> <body> <div class='d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm'> <h5 class='my-0 mr-md-auto font-weight-normal'> <a href='#' class='navbar-brand d-flex align-items-center'> <i class='fas fa-carrot' style='font-size:24px'></i> <strong>&nbsp;GNT-Market</strong> </a></h5> <nav class='my-2 my-md-0 mr-md-3'> <a class='p-2 text-dark' href='/GNTmarket/home'>Home</a> <a class='p-2 text-dark' href='/GNTmarket/dish'>Dish</a> <a class='p-2 text-dark' href='/GNTmarket/food'>Food</a> <a class='p-2 text-dark' href='/GNTmarket/gCard'>Grocery List</a> </nav> </div>";
+
+         htmlStr += "<div class=\"container-fluid\">"
+         + "<main role='main' class='container'>"
+         + "<h3>Grocery List Preference Check&nbsp;"
+         + "<i class=\"fas fa-check-square\"></i>"
+         + "</h3><br>";
 
          String[] ids = request.getParameterValues("addF");
          if (ids != null) {
@@ -202,8 +208,10 @@ public class DishGroceryCardServlet extends HttpServlet {
                + "<td>" + name + "</td>"
                + "<td><form method='get' action='dgCard'>\n"
                + "<input type='hidden' name='id' value='" + id + "'/>\n"
-               + "<label><input type='radio' name='todo' value='likeF'/>Like</label>\n"
-               + "<label><input type='radio' name='todo' value='avoidF'/>Avoid</label>\n"
+               + "<label><input type='radio' name='todo' value='likeF'/>"
+               + "<i class=\"far fa-thumbs-up\"></i></label>\n"
+               + "<label><input type='radio' name='todo' value='avoidF'/>"
+               + "<i class=\"far fa-thumbs-down\"></i></label>\n"
                + "<input type='submit' value='update'>\n"
                + "</td></form>\n";
             }
@@ -211,7 +219,7 @@ public class DishGroceryCardServlet extends HttpServlet {
          }
          htmlStr += "<p><a href='dish'>Select More Dish</a></p>\n"
          + "<p><form method='get' action='userdishGlist'><input type='submit' value='Save'></form></p>\n"
-         + "</body></html>\n";
+         + "</div></main></body></html>\n";
          
          request.setAttribute("gCard", gCard);
          session.setAttribute("gCard", gCard);

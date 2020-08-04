@@ -59,13 +59,13 @@ public class DishServlet extends HttpServlet {
 
 
          htmlStr += "<div class=\"container-fluid\">"
-         + "<div class=\"col-sm-5 col-md-6\">"
-         + "<h3>Search Dish&nbsp;"
+         + "<main role='main' class='container'>"
+         + "<p><h3>Search Dish&nbsp;"
          + "<i class=\"fas fa-drumstick-bite\"></i>&nbsp;<i class=\"fas fa-hotdog\"></i>&nbsp;"
          + "<i class=\"fas fa-hamburger\"></i>"
          + "&nbsp<i class=\"fas fa-pizza-slice\"></i>&nbsp;<i class=\"fas fa-stroopwafel\"></i>"
          + "&nbsp<i class=\"fas fa-seedling\"></i>"
-         + "</h3><br>"
+         + "</h3></p><br>"
          + "<form method='get' action='dishsearch'>\n"
          + "<select name='dname' id='dname' class='custom-select'>\n"
          + "<option value=''>Select Dish</option>\n";
@@ -74,10 +74,9 @@ public class DishServlet extends HttpServlet {
             String name = rset.getString("name");
             htmlStr += "<option value='" + name + "'>" + name + "</option>";
          } 
-         htmlStr += "</select></div>\n";
-         htmlStr += "<div class=\"col-sm-5 col-md-6\">"
-         + "<input type='text' class='form-control'  onfocus=\"this.value=''\" name='dsearch' placeholder='Type Dish Name'/>\n";
-         htmlStr += "<br><button type='submit' class='btn btn-primary mb-2' value='Search'/>search"
+         htmlStr += "</select>\n"
+         + "<input type='text' class='form-control'  onfocus=\"this.value=''\" name='dsearch' placeholder='Type Dish Name'/>\n"
+         + "<br><button type='submit' class='btn btn-primary mb-2' value='Search'/>search"
          + "</button></form>\n";
 
  
@@ -93,7 +92,7 @@ public class DishServlet extends HttpServlet {
                }
             }
          }
-         htmlStr += "</div></body></html>\n";
+         htmlStr += "</div></main></body></html>\n";
          out.println(htmlStr);
 
       } catch (SQLException ex) {
