@@ -147,7 +147,7 @@ public class UserGroceryListServlet extends HttpServlet {
                if (rset2.next()) {
             	   
                     htmlStr += "<tr><td><strike>" + name + "</strike></td>\n"
-                    + "<td> you marked it as dietry restriction!</td>\n";
+                    + "<td>Restricted food&nbsp;<i class=\"fas fa-exclamation-triangle\"></i></td>\n";
                     
                } else {
                     htmlStr += "<tr><td>" + name + "</td>\n"

@@ -134,7 +134,7 @@ public class SearchServlet extends HttpServlet
                 + "</tr>\n";
              }  while (rset.next());
              htmlStr += "</table><br/>\n"
-             + "<p><a href='food'>Select More Food</a></p>\n";
+             + "<p><a href='food'>Select More Food</a></p>\n"
              + "</main></div></body></html>\n";
             /*
             htmlStr += "<form method='get' action='gCard'>\n";
