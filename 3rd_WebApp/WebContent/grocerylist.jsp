@@ -92,13 +92,18 @@
 					
                     <td><form method='get' action='gCard'>
                				<input type='hidden' name='id' value="${food.id}"/>
-               				<label><input type='radio' name='todo' value='likeF'/>
-                            <i class="far fa-thumbs-up"></i></label>
-               				<label><input type='radio' name='todo' value='avoidF'/>
-                            <i class="far fa-thumbs-down"></i></label>
+
+                            <label style="color:blue;">
+                            <input type='radio' name='todo' value='likeF'/>
+                            <font size="+2"><i class="fab fa-gratipay"></i></font></label>
+
+                            <label style="color:red;">
+                            <input type='radio' name='todo' value='likeF'/>
+                            <font size="+2"><i class="fas fa-exclamation-triangle"></i></font></label>
+
                				<input type='submit' value='update'>
                		</form></td>
-                    
+
                     <td><c:out value="${food.nutrientInfo}" /></td>
 				</tr>
 			</c:forEach>
