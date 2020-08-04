@@ -136,6 +136,8 @@ public class GroceryCardServlet extends HttpServlet {
             String id = request.getParameter("id");  // Only one id for remove case
             gCard.remove(Integer.parseInt(id));
             
+            gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+            
             if(gCardID != 0) {
             	gCardDAO.removeFromGroceryList(gCardID, Integer.parseInt(id));
             }

@@ -55,7 +55,7 @@ public class GroceryCardDAO {
 	 	Statement statement = dbCon.createStatement();
 	 	
 	 	System.out.println(sqlStr);
-	 	statement.executeQuery(sqlStr);
+	 	statement.executeUpdate(sqlStr);
 	 	  
 	 	statement.close();
 	 	 
@@ -128,7 +128,7 @@ public class GroceryCardDAO {
     	statement.setInt(2, foodID);
     	
     	System.out.println(sql);
-    	statement.executeQuery();
+    	statement.executeUpdate();
     	
     	statement.close();
     	
