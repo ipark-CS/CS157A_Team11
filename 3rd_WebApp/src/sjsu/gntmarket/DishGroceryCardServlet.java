@@ -41,6 +41,7 @@ public class DishGroceryCardServlet extends HttpServlet {
       HttpSession session = request.getSession(true);
       GroceryCard gCard;
       User currentUser;
+      int gCardID = 0;
       
       synchronized (session) {  // synchronized to prevent concurrent updates
          // Retrieve the shopping cart for this session, if any. Otherwise, create one.
@@ -68,7 +69,7 @@ public class DishGroceryCardServlet extends HttpServlet {
         	 
         	 //Checks if User already has GroceryCard stored
         	 try {
-				int gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+				gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
 				
 				if(gCardID != 0) {
 					System.out.println("Found grocery list: " + gCardID);
@@ -128,8 +129,18 @@ public class DishGroceryCardServlet extends HttpServlet {
 
          String[] ids2 = request.getParameterValues("delF");
          if (ids2 != null) {
-            for (String id : ids2) 
+        	 
+        	 gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+        	 
+            for (String id : ids2) {
+            	
                 gCard.remove(Integer.parseInt(id));
+            
+	            if(gCardID != 0) {
+	            	gCardDAO.removeFromGroceryList(gCardID, Integer.parseInt(id));
+	            }
+            }
+            
          } 
  
          String todo = request.getParameter("todo");
