@@ -43,22 +43,31 @@
     <link href="pricing.css" rel="stylesheet">
   </head>
 </head>
-
-
   
 <body>
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-  <h5 class="my-0 mr-md-auto font-weight-normal">GNT-Market</h5>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
-    
-    <c:if test="${currentUser != null}">
-        <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
-    	<a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
-    	<a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
-    </c:if>
-  </nav>
+	  <h5 class="my-0 mr-md-auto font-weight-normal">GNT-Market</h5>
+	  <nav class="my-2 my-md-0 mr-md-3">
+	    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
+	    
+	    <c:if test="${currentUser != null}">
+	        <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
+	    	<a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
+	    	<a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
+	    </c:if>
+	  </nav>
+  </div>
   
-</div>
+       <h2>Select/Search Food</h2>
+       <form method='get' action='search'>
+	       <select name='fname' id='fname' size='1'></select>
+	       <option value=''>Select Food</option>
+	       <option value='" + name + "'>" + name + "</option>
+	       
+	       <input type='submit' value='Search' />
+       </form>
+  
+  <p><a href='gCard?todo=view'>Grocery List</a></p>
+  
 </body>
 </html>

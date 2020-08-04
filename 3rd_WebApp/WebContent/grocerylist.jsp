@@ -86,18 +86,18 @@
             	<th>Nutrient Info</th>
 			</tr>
 			
-			<c:forEach var="food" items="${foodNutrientMap}">
+			<c:forEach var="food" items="${groceryArrList}">
 				<tr>
-					<td><c:out value="${food.key}" /></td>
+					<td><c:out value="${food.name}" /></td>
 					
                     <td><form method='get' action='gCard'>
-               				<input type='hidden' name='id' value='" + id + "'/>
+               				<input type='hidden' name='id' value="${food.id}"/>
                				<label><input type='radio' name='todo' value='likeF'/>Like</label>
                				<label><input type='radio' name='todo' value='avoidF'/>Avoid</label>
                				<input type='submit' value='update'>
                		</form></td>
                     
-                    <td><c:out value="${food.value}" /></td>
+                    <td><c:out value="${food.nutrientInfo}" /></td>
 				</tr>
 			</c:forEach>
 			

@@ -46,6 +46,49 @@ public class GroceryCardDAO {
     	}
     }
     
+    public void insertNewGroceryList() throws SQLException{
+ 	   
+	 	String sqlStr = "INSERT INTO grocerylist (date) VALUES(now())";
+	 	   
+	 	mysqlConnect();
+	 	  
+	 	Statement statement = dbCon.createStatement();
+	 	
+	 	System.out.println(sqlStr);
+	 	statement.executeQuery(sqlStr);
+	 	  
+	 	statement.close();
+	 	 
+	 	mysqlDisconnect();
+ 	   
+    }
+    
+    public String getNewestGroceryList() throws SQLException{
+    	
+    	String sqlStr = "SELECT list_id FROM grocerylist ORDER BY list_id DESC LIMIT 1";
+    	
+	 	mysqlConnect();
+	 	  
+	 	Statement statement = dbCon.createStatement();
+	 	
+	 	System.out.println(sqlStr);
+	 	ResultSet rs = statement.executeQuery(sqlStr);
+	 	
+	 	String listID = "";
+	 	
+	 	if (rs.next()) {
+	 		listID = rs.getString("list_id");
+	 	}
+	 	
+	 	rs.close();  
+	 	statement.close();
+	 	 
+	 	mysqlDisconnect();
+    	
+		return listID;
+    	
+    }
+    
     public int getUserGroceryListID(int userID) throws SQLException{
     	
     	String sql = "SELECT list_id FROM user_creates_grocerylist WHERE user_id = ? " + 
@@ -69,7 +112,28 @@ public class GroceryCardDAO {
     	rs.close();
     	statement.close();
     	
+    	mysqlDisconnect();
+    	
     	return listID;
+    }
+    
+    public void removeFromGroceryList(int listID, int foodID) throws SQLException {
+    	
+    	String sql = "DELETE FROM food_lists_grocerylist WHERE list_id = ? AND food_id = ?";
+    	
+    	mysqlConnect();
+    	
+    	PreparedStatement statement = dbCon.prepareStatement(sql);
+    	statement.setInt(1, listID);
+    	statement.setInt(2, foodID);
+    	
+    	System.out.println(sql);
+    	statement.executeQuery();
+    	
+    	statement.close();
+    	
+    	mysqlDisconnect();
+    	
     }
     
     public GroceryCard restoreGroceryCard(int listID) throws SQLException {

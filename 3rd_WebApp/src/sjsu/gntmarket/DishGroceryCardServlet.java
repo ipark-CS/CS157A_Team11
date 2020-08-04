@@ -12,6 +12,10 @@ public class DishGroceryCardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private String dbURL, dbUser, dbPassword;
+    
+    private GroceryCardDAO gCardDAO;
+    private FoodDAO foodDAO;
+    private UserDAO userDAO;
 
 	public DishGroceryCardServlet() {
 		super();
@@ -21,6 +25,10 @@ public class DishGroceryCardServlet extends HttpServlet {
 		dbURL = getServletContext().getInitParameter("dbURL");
 		dbUser = getServletContext().getInitParameter("dbUser");
 		dbPassword = getServletContext().getInitParameter("dbPassword");
+		
+		gCardDAO = new GroceryCardDAO(dbURL, dbUser, dbPassword);
+		foodDAO = new FoodDAO(dbURL, dbUser, dbPassword);
+		userDAO = new UserDAO(dbURL, dbUser, dbPassword);
 	}
 	
    @Override
@@ -33,13 +41,14 @@ public class DishGroceryCardServlet extends HttpServlet {
       HttpSession session = request.getSession(true);
       GroceryCard gCard;
       User currentUser;
+      
       synchronized (session) {  // synchronized to prevent concurrent updates
          // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-         gCard = (GroceryCard) session.getAttribute("dgCard");
+         /*gCard = (GroceryCard) session.getAttribute("dgCard");
          if (gCard == null) {
             gCard = new GroceryCard();
             session.setAttribute("dgCard", gCard);  // Save it into session
-         }
+         } */
          
          currentUser = (User)session.getAttribute("currentUser");
          
@@ -51,6 +60,38 @@ public class DishGroceryCardServlet extends HttpServlet {
          else {
         	 System.out.println("Hello, " + currentUser.getName() + " - ID: " + currentUser.getId());
          }
+         
+         
+         gCard = (GroceryCard) session.getAttribute("gCard");
+         
+         if (gCard == null) {
+        	 
+        	 //Checks if User already has GroceryCard stored
+        	 try {
+				int gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+				
+				if(gCardID != 0) {
+					System.out.println("Found grocery list: " + gCardID);
+					
+					gCard = gCardDAO.restoreGroceryCard(gCardID);
+					
+					if (gCard == null) {
+						gCard = new GroceryCard();
+					}
+					
+				} else {
+					gCard = new GroceryCard();
+				}
+				
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+        	 
+            session.setAttribute("gCard", gCard);  // Save it into session
+         }
+         
+         
       }
 
       //////////////////////////////
@@ -109,6 +150,9 @@ public class DishGroceryCardServlet extends HttpServlet {
                + "0)";          // is_favorite
                System.out.println(sqlStr);  // for debugging
                stmt.executeUpdate(sqlStr);
+               
+               userDAO.userMarksFood(userID, id, 1, 0);
+               
             } else if (todo.equals("likeF")) {
                String id = request.getParameter("id");  // Only one id for remove case
                /*
@@ -124,6 +168,8 @@ public class DishGroceryCardServlet extends HttpServlet {
                + "1)";          // is_favorite
                System.out.println(sqlStr);  // for debugging
                stmt.executeUpdate(sqlStr);
+               
+               userDAO.userMarksFood(userID, id, 0, 1);
             }
          }
 
@@ -155,6 +201,9 @@ public class DishGroceryCardServlet extends HttpServlet {
          htmlStr += "<p><a href='dish'>Select More Dish</a></p>\n"
          + "<p><form method='get' action='userdishGlist'><input type='submit' value='Save'></form></p>\n"
          + "</body></html>\n";
+         
+         request.setAttribute("gCard", gCard);
+         session.setAttribute("gCard", gCard);
 
          out.println(htmlStr);
 

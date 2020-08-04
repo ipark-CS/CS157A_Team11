@@ -11,6 +11,10 @@ public class DishServlet extends HttpServlet {
  
     private static final long serialVersionUID = 1L;
     private String dbURL, dbUser, dbPassword;
+    
+    private GroceryCardDAO gCardDAO;
+    private FoodDAO foodDAO;
+    private UserDAO userDAO;
  
 	public DishServlet() {
 		super();
@@ -20,6 +24,11 @@ public class DishServlet extends HttpServlet {
 		dbURL = getServletContext().getInitParameter("dbURL");
 		dbUser = getServletContext().getInitParameter("dbUser");
 		dbPassword = getServletContext().getInitParameter("dbPassword");
+		
+		gCardDAO = new GroceryCardDAO(dbURL, dbUser, dbPassword);
+		foodDAO = new FoodDAO(dbURL, dbUser, dbPassword);
+		userDAO = new UserDAO(dbURL, dbUser, dbPassword);
+		
 		// load and register JDBC driver for MySQL 
 		try {
             Class.forName("com.mysql.cj.jdbc.Driver");

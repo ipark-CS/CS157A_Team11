@@ -95,6 +95,42 @@ public class UserDAO {
     	
     	return userID;
     }
+    /**
+     * 
+                    sqlStr = "SELECT food_id FROM user_marks_food WHERE " 
+               + "user_id="+ userID + " AND food_id=" + id + " AND "
+               + "is_restricted=1 GROUP BY food_id";
+     */
+    
+    public void userMarksFood(String userID, String foodID, int isRestricted, int isFavorite) throws SQLException{
+    	
+    	/*String sqlStr = "SELECT food_id FROM user_marks_food " 
+                + "WHERE user_id="+ userID + " AND food_id=" + foodID + " "
+                + "AND is_restricted=1 GROUP BY food_id";*/
+    	
+    	String sqlStr = "UPDATE user_marks_food " + 
+    					"SET is_restricted = ? AND is_favorite = ? " +
+    					"WHERE user_id = ? AND food_id = ?";
+    	
+    	mysqlConnect();
+    	
+    	PreparedStatement statement = dbCon.prepareStatement(sqlStr);
+    	
+    	statement.setInt(1, isRestricted);
+    	statement.setInt(2, isFavorite);
+    	statement.setString(3, userID);
+    	statement.setString(4, foodID);
+    	
+    	//Statement statement = dbCon.createStatement();
+    	
+    	System.out.println(sqlStr);
+    	
+    	statement.executeUpdate();
+    	
+    	statement.close();
+    	
+    	mysqlDisconnect();
+    }
     
     public List<User> listUsers() throws SQLException {
     	List<User> userList = new ArrayList<User>();

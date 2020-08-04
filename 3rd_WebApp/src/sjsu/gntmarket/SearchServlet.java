@@ -10,6 +10,11 @@ import javax.sql.*;
 public class SearchServlet extends HttpServlet 
 {
     private String dbURL, dbUser, dbPassword;
+    
+    private GroceryCardDAO gCardDAO;
+    private FoodDAO foodDAO;
+    private UserDAO userDAO;
+    
     public SearchServlet() 
     {
         super();
@@ -20,6 +25,11 @@ public class SearchServlet extends HttpServlet
         dbURL = getServletContext().getInitParameter("dbURL");
         dbUser = getServletContext().getInitParameter("dbUser");
         dbPassword = getServletContext().getInitParameter("dbPassword");
+        
+		gCardDAO = new GroceryCardDAO(dbURL, dbUser, dbPassword);
+		foodDAO = new FoodDAO(dbURL, dbUser, dbPassword);
+		userDAO = new UserDAO(dbURL, dbUser, dbPassword);
+        
         // load and register JDBC driver for MySQL 
         try 
         {                                              
@@ -67,6 +77,7 @@ public class SearchServlet extends HttpServlet
           AND fn.food_id=f.food_id
           GROUP BY f.food_id;
           */
+          
           String sqlStr = "SELECT f.name AS name, "
           + "f.food_id AS food_id,  "
           + "GROUP_CONCAT(n.name SEPARATOR ', ') AS Nutrients  "
@@ -139,13 +150,64 @@ public class SearchServlet extends HttpServlet
              
              HttpSession session = request.getSession(false); // check if session exists
              if (session != null) {
-                GroceryCard gCard;
+                
+            	GroceryCard gCard;
+                User currentUser;
+                
                 synchronized (session) {
+                	
+	                currentUser = (User)session.getAttribute("currentUser");
+	                
+	                System.out.print("(Insde SearchServlet near end) ");
+	
+	                if (currentUser == null) {
+	                	System.out.println("No user found");
+	                }
+	                else {
+	                	System.out.println("Hello, " + currentUser.getName() + " - ID: " + currentUser.getId());
+	                }
+                	
                    // Retrieve the shopping cart for this session, if any. Otherwise, create one.
                    gCard = (GroceryCard) session.getAttribute("gCard");
-                   if (gCard != null && !gCard.isEmpty()) {
-                      htmlStr += "<p><a href='gCard?todo=view'>Grocery List</a></p>\n";
+                   
+                   
+                   
+                   if (gCard == null) {
+                  	 
+                  	 //Checks if User already has GroceryCard stored
+                  	 try {
+          				int gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+          				
+          				if(gCardID != 0) {
+          					System.out.println("Found grocery list: " + gCardID);
+          					
+          					gCard = gCardDAO.restoreGroceryCard(gCardID);
+          					
+          					if (gCard == null) {
+          						gCard = new GroceryCard();
+          					}
+          					
+          				} else {
+          					gCard = new GroceryCard();
+          				}
+          				
+          			} catch (SQLException e) {
+          				
+          				e.printStackTrace();
+          			}
+                  	 
+                      session.setAttribute("gCard", gCard);  // Save it into session
                    }
+                   
+                   
+                   
+                   
+                   if (gCard != null && !gCard.isEmpty()) {
+                	   
+                      htmlStr += "<p><a href='gCard?todo=view'>Grocery List</a></p>\n";
+                      
+                   }           
+                   
                 }
              }
              htmlStr += "</body></html>\n";

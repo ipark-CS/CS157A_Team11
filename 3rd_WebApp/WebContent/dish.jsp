@@ -54,64 +54,16 @@
 <i class='fas fa-carrot' style='font-size:24px'></i>
 <strong>&nbsp;GNT-Market</strong>
 </a></h5>
-<nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
-    
-    <c:if test="${currentUser != null}">
-        <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
-    	<a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
-    	<a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
-    </c:if>
-    
-    <c:if test="${currentUser == null}">  
-   		<a class="p-2 text-dark" href="/GNTmarket/new-account">Create Account</a>
-   		<a class="btn btn-outline-primary" href="/GNTmarket/login">Login</a>
-   	</c:if>
-    <!-- <a class="p-2 text-dark" href="/GNTmarket/user-list">User Test Page</a>  -->
-  </nav>
+	<nav class="my-2 my-md-0 mr-md-3">
+	    <a class="p-2 text-dark" href="/GNTmarket/home">Home</a>
+	    
+	    <c:if test="${currentUser != null}">
+	        <a class="p-2 text-dark" href="/GNTmarket/dish">Dish</a>
+	    	<a class="p-2 text-dark" href="/GNTmarket/food">Food</a>
+	    	<a class="p-2 text-dark" href="/GNTmarket/gCard">Grocery List</a>
+	    </c:if>
+	    <!-- <a class="p-2 text-dark" href="/GNTmarket/user-list">User Test Page</a>  -->
+    </nav>
 </div>
-
-<main role="main" class="container">
-   <% 
-     String db = "GNTmarket";
-        String user; // assumes database name is the same as username
-          user = "root";
-          String password = "Summer2020~";
-        try {
-            
-            java.sql.Connection con; 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url="jdbc:mysql://localhost:3306/" + db + "?serverTimezone=UTC";
-            con = DriverManager.getConnection(url, user, password);
-            out.println(db + " database successfully opened.<br/><br/>");
-            
-            String tableName = "Food_in_Category";
-        	%>
-        	<div class="list-group">
-        	
-            <button type="button" class="list-group-item list-group-item-action active">
-            <%=tableName + " table fetched"%>
-           </button>
-           	<%
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
-            while (rs.next()) {
-            	%>
-            	<button type="button" class="list-group-item list-group-item-action">
-            	<%=rs.getInt(1) + " " + rs.getInt(2) + " " + rs.getString(3)%>
-            	 </button>
-				<%
-            }
-            rs.close();
-            stmt.close();
-            con.close();
-        } catch(SQLException e) { 
-            out.println("SQLException caught: " + e.getMessage()); 
-        }
-    %>
- 
-
-</div>
-
-</main><!-- /.container -->
-</body></html>
+</body>
+</html>

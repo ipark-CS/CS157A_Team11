@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FoodDAO {
 	
@@ -45,8 +47,52 @@ public class FoodDAO {
     	}
     }
     
-    public void listAllFood() {
+    public void listAllFood() throws SQLException{
     	
+    	mysqlConnect();
+    	
+    	mysqlDisconnect();
+    	
+    }
+    
+    public List<GroceryListRow> getGroceryRows(GroceryCard gCard) throws SQLException{
+    	
+    	mysqlConnect();
+    	
+    	List<GroceryListRow> groceryArrList = new ArrayList<GroceryListRow>();
+    	
+    	for (GroceryCardItem item : gCard.getItems()) {
+        	
+            int id = item.getId();
+            
+            String name = item.getName();
+
+            String sqlStr2 = "SELECT GROUP_CONCAT(n.name SEPARATOR ', ') AS Nutrients\n"
+            + "FROM Food_has_Nutrient fn NATURAL JOIN  Nutrient n\n"
+            + "WHERE fn.food_id=" + id + "\n"
+            + "AND fn.nutrient_id=n.nutrient_id\n"
+            + "GROUP BY fn.food_id\n";
+            
+            PreparedStatement stmt = dbCon.prepareStatement(sqlStr2);
+        	//stmt.setInt(1, userID);
+            
+            ResultSet rset2 = stmt.executeQuery(sqlStr2);
+            
+            rset2.next(); // Expect only one row in ResultSet
+            
+            String nutrient_info = rset2.getString("Nutrients");
+            
+            GroceryListRow gListRow = new GroceryListRow(id, name, nutrient_info);
+            
+            groceryArrList.add(gListRow);
+            
+            rset2.close();
+        }
+    	
+    	
+    	mysqlDisconnect();
+    	
+		return groceryArrList;
     }
     
     public HashMap<String, String> getFoodNutrients(GroceryCard gCard) throws SQLException{

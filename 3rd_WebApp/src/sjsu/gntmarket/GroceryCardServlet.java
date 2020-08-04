@@ -9,6 +9,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GroceryCardServlet extends HttpServlet {
@@ -16,8 +17,9 @@ public class GroceryCardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private String dbURL, dbUser, dbPassword;
     
-    GroceryCardDAO gCardDAO;
-    FoodDAO foodDAO;
+    private GroceryCardDAO gCardDAO;
+    private FoodDAO foodDAO;
+    private UserDAO userDAO;
 
 	public GroceryCardServlet() {
 		super();
@@ -30,6 +32,7 @@ public class GroceryCardServlet extends HttpServlet {
 		
 		gCardDAO = new GroceryCardDAO(dbURL, dbUser, dbPassword);
 		foodDAO = new FoodDAO(dbURL, dbUser, dbPassword);
+		userDAO = new UserDAO(dbURL, dbUser, dbPassword);
 	}
 	
    @Override
@@ -42,6 +45,7 @@ public class GroceryCardServlet extends HttpServlet {
       HttpSession session = request.getSession(true);
       GroceryCard gCard;
       User currentUser;
+      int gCardID = 0;
       
       synchronized(session) {  // synchronized to prevent concurrent updates
 
@@ -63,7 +67,7 @@ public class GroceryCardServlet extends HttpServlet {
         	 
         	 //Checks if User already has GroceryCard stored
         	 try {
-				int gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+				gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
 				
 				if(gCardID != 0) {
 					System.out.println("Found grocery list: " + gCardID);
@@ -131,6 +135,12 @@ public class GroceryCardServlet extends HttpServlet {
          } else if (todo.equals("delF")) {
             String id = request.getParameter("id");  // Only one id for remove case
             gCard.remove(Integer.parseInt(id));
+            
+            if(gCardID != 0) {
+            	gCardDAO.removeFromGroceryList(gCardID, Integer.parseInt(id));
+            }
+            
+            
          } else if (todo.equals("avoidF")) {
             String id = request.getParameter("id");  // Only one id for remove case
             sqlStr = "REPLACE INTO user_marks_food VALUES (" 
@@ -140,6 +150,9 @@ public class GroceryCardServlet extends HttpServlet {
             + "0)";          // is_favorite
             System.out.println(sqlStr);  // for debugging
             stmt.executeUpdate(sqlStr);
+            
+            userDAO.userMarksFood(userID, id, 1, 0);
+            
             //sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
             /*
             sqlStr = "UPDATE user_marks_food "
@@ -158,6 +171,9 @@ public class GroceryCardServlet extends HttpServlet {
             + "1)";          // is_favorite
             System.out.println(sqlStr);  // for debugging
             stmt.executeUpdate(sqlStr);
+            
+            userDAO.userMarksFood(userID, id, 0, 1);
+            
             /*
             sqlStr = "UPDATE user_marks_food "
             + "SET is_restricted=0, is_favorite=1 "
@@ -217,6 +233,7 @@ public class GroceryCardServlet extends HttpServlet {
          displayGroceryList(request, response, gCard);
 
       } catch (SQLException ex) {
+    	 System.out.println("SQL ERROR: " + ex.getMessage( ));
          out.println("<h3>Service not available. Please try again later!</h3></body></html>");
       } finally {
          out.close();
@@ -230,7 +247,6 @@ public class GroceryCardServlet extends HttpServlet {
       doGet(request, response);
    }
    
-   
 	public void displayGroceryList(HttpServletRequest request, HttpServletResponse response, GroceryCard gCard)
 			throws ServletException, IOException, SQLException {
 		
@@ -238,14 +254,20 @@ public class GroceryCardServlet extends HttpServlet {
 		
 		Map<String, String> foodNutrientMap = new HashMap<String, String>();
 		
+		List<GroceryListRow> groceryArrList = new ArrayList<GroceryListRow>();
+		
 		foodNutrientMap = foodDAO.getFoodNutrients(gCard);
 		
+		groceryArrList = foodDAO.getGroceryRows(gCard);
+		
 		request.setAttribute("gCard", gCard);
-		request.setAttribute("foodNutrientMap", foodNutrientMap);
+		//request.setAttribute("foodNutrientMap", foodNutrientMap);
+		request.setAttribute("groceryArrList", groceryArrList);
 		
 	    HttpSession session = request.getSession();
 	    session.setAttribute("gCard", gCard);
-	    session.setAttribute("foodNutrientMap", foodNutrientMap);
+	    //session.setAttribute("foodNutrientMap", foodNutrientMap);
+	    session.setAttribute("groceryArrList", groceryArrList);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("grocerylist.jsp");
 		dispatcher.forward(request, response);

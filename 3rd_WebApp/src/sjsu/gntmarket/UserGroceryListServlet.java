@@ -12,6 +12,9 @@ public class UserGroceryListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private String dbURL, dbUser, dbPassword;
+    
+    GroceryCardDAO gCardDAO;
+    FoodDAO foodDAO;
 
 	public UserGroceryListServlet() {
 		super();
@@ -21,6 +24,9 @@ public class UserGroceryListServlet extends HttpServlet {
 		dbURL = getServletContext().getInitParameter("dbURL");
 		dbUser = getServletContext().getInitParameter("dbUser");
 		dbPassword = getServletContext().getInitParameter("dbPassword");
+		
+		gCardDAO = new GroceryCardDAO(dbURL, dbUser, dbPassword);
+		foodDAO = new FoodDAO(dbURL, dbUser, dbPassword);
 	}
 	
    @Override
@@ -33,24 +39,66 @@ public class UserGroceryListServlet extends HttpServlet {
       HttpSession session = request.getSession(true);
       GroceryCard gCard;
       User currentUser;
+      int gCardID = 0;
+      
       synchronized (session) {  // synchronized to prevent concurrent updates
          // Retrieve the shopping cart for this session, if any. Otherwise, create one.
-         gCard = (GroceryCard) session.getAttribute("gCard");
+         /*gCard = (GroceryCard) session.getAttribute("gCard");
          if (gCard == null) {
             gCard = new GroceryCard();
             session.setAttribute("gCard", gCard);  // Save it into session
          }
+         */
          
-         currentUser = (User)session.getAttribute("currentUser");
-         
-         System.out.print("(Inside UserGroceryListServlet - doGet()) ");
+          currentUser = (User)session.getAttribute("currentUser");
+          
+          System.out.print("(Insde UserGroceryCardServlet doGet()) ");
 
-         if (currentUser == null) {
-        	 System.out.println("No user found");
-         }
-         else {
-        	 System.out.println("Hello, " + currentUser.getName() + " - ID: " + currentUser.getId());
-         }
+          if (currentUser == null) {
+         	 System.out.println("No user found");
+          }
+          else {
+         	 System.out.println("Hello, " + currentUser.getName() + " - ID: " + currentUser.getId());
+          }
+          
+          // Retrieve the shopping cart for this session, if any. Otherwise, create one.
+          gCard = (GroceryCard) session.getAttribute("gCard");
+          
+          if (gCard == null) {
+         	 
+         	 //Checks if User already has GroceryCard stored
+         	 try {
+ 				gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+ 				
+ 				if(gCardID != 0) {
+ 					System.out.println("Found grocery list: " + gCardID);
+ 					
+ 					gCard = gCardDAO.restoreGroceryCard(gCardID);
+ 					
+ 					if (gCard == null) {
+ 						gCard = new GroceryCard();
+ 					}
+ 					
+ 				} else {
+ 					gCard = new GroceryCard();
+ 				}
+ 				
+ 			} catch (SQLException e) {
+ 				
+ 				e.printStackTrace();
+ 			}
+         	 
+             session.setAttribute("gCard", gCard);  // Save it into session
+          } else {
+        	  
+        	  try {
+				gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+          }
+         
       }
 
       //////////////////////////////
@@ -91,9 +139,12 @@ public class UserGroceryListServlet extends HttpServlet {
                System.out.println(sqlStr);
                
                ResultSet rset2 = stmt.executeQuery(sqlStr);
+               
                if (rset2.next()) {
+            	   
                     htmlStr += "<tr><td><strike>" + name + "</strike></td>\n"
                     + "<td> you marked it as dietry restriction!</td>\n";
+                    
                } else {
                     htmlStr += "<tr><td>" + name + "</td>\n"
                     + "<td></td>\n";
@@ -109,16 +160,33 @@ public class UserGroceryListServlet extends HttpServlet {
             //                                                            
             // Step1) create a grocerylist
             //        AND get grocery list ID (list_id)
-            sqlStr = "INSERT INTO grocerylist (date) VALUES(now());";
-            System.out.println(sqlStr);
-            stmt.executeUpdate(sqlStr);
             
-
-            // get glistID
-            sqlStr = "SELECT list_id FROM grocerylist ORDER BY  list_id DESC LIMIT 1";
-            ResultSet rset = stmt.executeQuery(sqlStr);
-            rset.next();
-            String glistID = rset.getString("list_id");
+            String glistID = "";
+            
+            if(gCardID == 0) {
+            	
+            	
+            	//sqlStr = "INSERT INTO grocerylist (date) VALUES(now());";
+            	
+            	gCardDAO.insertNewGroceryList();
+            	
+                //System.out.println(sqlStr);
+                //stmt.executeUpdate(sqlStr);
+              
+                // get glistID
+                //sqlStr = "SELECT list_id FROM grocerylist ORDER BY list_id DESC LIMIT 1";
+                //ResultSet rset = stmt.executeQuery(sqlStr);
+                //rset.next();
+                //glistID = rset.getString("list_id");
+                
+                glistID = gCardDAO.getNewestGroceryList();
+            	
+            	
+            }
+            else {
+            	glistID = String.valueOf(gCardID);
+            }
+            
             System.out.println("glistID=" + glistID);
             
             // Step2) user create a grocerylist (user_id, list_id)
@@ -126,14 +194,17 @@ public class UserGroceryListServlet extends HttpServlet {
             //        have multiple grocerylist, thus should accept duplicate user_id
             //        with different list_id
             //
-            sqlStr = "INSERT INTO user_creates_grocerylist (user_id, list_id) "
+            
+            sqlStr = "REPLACE INTO user_creates_grocerylist (user_id, list_id) "
             + "VALUES (" + userID + ", " + glistID + ")";
             System.out.println(sqlStr);
             stmt.executeUpdate(sqlStr);
 
             // Step3) insert food list to grocery list (food_id, list_id)
-            sqlStr = "INSERT INTO Food_lists_GroceryList (food_id, list_id) VALUES ";
+            sqlStr = "REPLACE INTO Food_lists_GroceryList (food_id, list_id) VALUES ";
+            
             int i = 0;
+            
             for (GroceryCardItem item : gCard.getItems()) {
                i += 1;
                int id = item.getId();
@@ -145,10 +216,16 @@ public class UserGroceryListServlet extends HttpServlet {
             }
             System.out.println(sqlStr);
             stmt.executeUpdate(sqlStr);
+            
+            request.setAttribute("gCard", gCard);
+            session.setAttribute("gCard", gCard);
+            
             htmlStr += "<p><a href='/GNTmarket/'>Return to Home</a></p>\n"
             + "<p><a href='/GNTmarket/gCard'>Return to GroceryList</a></p>\n"
             + "</body></html>\n";
             out.println(htmlStr);
+            
+            
          }
       } catch (SQLException ex) {
          out.println(ex.toString());
