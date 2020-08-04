@@ -71,10 +71,25 @@
   </nav>
 </div>
 
+
     <div align="center">
-    	<h1>Welcome to GNT Market!</h1>
+    	<h2>
+         &nbsp;<i class="fas fa-cheese"></i>
+         &nbsp;<i class="fas fa-apple"></i>
+         &nbsp;<i class="fas fa-pepper-hot"></i>
+         &nbsp;<i class="fas fa-bread-slice"></i>
+         &nbsp;<i class="fas fa-ice-cream"></i>
+        </h2>
+        <h2><strong>Welcome to GNT Market</strong></h2>
+    	<h2>
+         &nbsp;<i class="fas fa-drumstick-bite"></i>
+         &nbsp;<i class="fas fa-hotdog"></i>
+         &nbsp;<i class="fas fa-hamburger"></i>
+         &nbsp;<i class="fas fa-pizza-slice"></i>
+         &nbsp;<i class="fas fa-stroopwafel"></i>
+        </h2>
     	<br><c:if test="${currentUser != null}">  
-    		<h2>Hello, <c:out value="${currentUser.name}"></c:out>!</h2>
+        <h4>Hello, <c:out value="${currentUser.name}"></c:out>!</h4>
     	</c:if>
     </div>
 </body>
