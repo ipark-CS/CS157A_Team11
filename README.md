@@ -11,4 +11,4 @@ Main theme of this web app is to help users to get a convenient and healthy sele
 <img src="https://github.com/ipark-CS/CS157A_Team11/blob/master/3rd_WebApp/img/updated_schema.png"  width="600">
 
 ### Current WebApp Status
-<img src="https://github.com/ipark-CS/CS157A_Team11/blob/master/3rd_WebApp/image/frontPage.png"  width="800">
+<img src="https://github.com/ipark-CS/CS157A_Team11/blob/master/3rd_WebApp/img/frontPage.png"  width="800">
