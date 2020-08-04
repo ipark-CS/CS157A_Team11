@@ -92,13 +92,12 @@
 					
                     <td><form method='get' action='gCard'>
                				<input type='hidden' name='id' value="${food.id}"/>
-
                             <label style="color:blue;">
                             <input type='radio' name='todo' value='likeF'/>
                             <font size="+2"><i class="fab fa-gratipay"></i></font></label>
 
                             <label style="color:red;">
-                            <input type='radio' name='todo' value='likeF'/>
+                            <input type='radio' name='todo' value='avoidF'/>
                             <font size="+2"><i class="fas fa-exclamation-triangle"></i></font></label>
 
                				<input type='submit' value='update'>
