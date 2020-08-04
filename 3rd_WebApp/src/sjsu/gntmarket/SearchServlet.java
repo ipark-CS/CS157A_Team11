@@ -134,7 +134,7 @@ public class SearchServlet extends HttpServlet
                 + "</tr>\n";
              }  while (rset.next());
              htmlStr += "</table><br/>\n"
-             + "<p><a href='food'>Select More Food</a></p>\n"
+             + "<p><a href='food'>Select More Food</a></p>\n";
              + "</main></div></body></html>\n";
             /*
             htmlStr += "<form method='get' action='gCard'>\n";
@@ -183,42 +183,29 @@ public class SearchServlet extends HttpServlet
                   	 //Checks if User already has GroceryCard stored
                   	 try {
           				int gCardID = gCardDAO.getUserGroceryListID(currentUser.getId());
-          				
           				if(gCardID != 0) {
           					System.out.println("Found grocery list: " + gCardID);
-          					
           					gCard = gCardDAO.restoreGroceryCard(gCardID);
-          					
           					if (gCard == null) {
           						gCard = new GroceryCard();
           					}
-          					
           				} else {
           					gCard = new GroceryCard();
           				}
-          				
           			} catch (SQLException e) {
-          				
           				e.printStackTrace();
           			}
-                  	 
                       session.setAttribute("gCard", gCard);  // Save it into session
                    }
-                   
-                   
-                   
-                   
                    if (gCard != null && !gCard.isEmpty()) {
-                	   
-                      htmlStr += "<p><a href='gCard?todo=view'>Grocery List</a></p>\n";
-                      
+                      htmlStr += "<div class=\"col-sm-5 col-md-6\">"
+                      + "<p><a href='gCard?todo=view'>Grocery List</a></p></div>\n";
                    }           
-                   
                 }
              }
+          }
              htmlStr += "</main></div></body></html>\n";
              out.println(htmlStr);
-          }
        } catch (SQLException ex) {
           out.println("<h3>Service not available. Please try again later!</h3></body></html>");
           System.out.println(ex.toString());
