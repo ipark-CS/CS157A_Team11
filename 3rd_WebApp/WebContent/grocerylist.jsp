@@ -76,7 +76,10 @@
 <main role="main" class="container">
 
     	<br><c:if test="${currentUser != null}">  
-    		<h2>Hello, <c:out value="${currentUser.name}"></c:out>!</h2>
+    		<h3><c:out value="${currentUser.name}"></c:out>'s Grocery List
+                <i class="fas fa-list-alt"></i>
+            </h3>
+
     	</c:if>
     	
     	<table border="1" cellpadding="6">
