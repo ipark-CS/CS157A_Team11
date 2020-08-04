@@ -77,7 +77,7 @@ public class DishSearchServlet extends HttpServlet
               if (hasDname) {
                   sqlStr += " OR ";
               }
-              sqlStr += "name LIKE '%" + dsearchW.trim() + "%')";
+              sqlStr += "name LIKE '%" + dsearchW.trim() + "%'";
           } 
           sqlStr += "AND f.food_id=df.food_id "
           + "AND d.dish_id=df.dish_id)";
