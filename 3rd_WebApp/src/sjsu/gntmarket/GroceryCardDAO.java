@@ -46,6 +46,10 @@ public class GroceryCardDAO {
     	}
     }
     
+    /**
+     * This method is used to insert a new row to the grocerylist table
+     * @throws SQLException
+     */
     public void insertNewGroceryList() throws SQLException{
  	   
 	 	String sqlStr = "INSERT INTO grocerylist (date) VALUES(now())";
@@ -63,6 +67,12 @@ public class GroceryCardDAO {
  	   
     }
     
+  /**
+   * This method called called to get the latest grocerylist id when it gets created
+   * so it may be referred to throughout the servlet.
+   * @throws SQLException
+   * 
+   */
     public String getNewestGroceryList() throws SQLException{
     	
     	String sqlStr = "SELECT list_id FROM grocerylist ORDER BY list_id DESC LIMIT 1";
@@ -89,6 +99,12 @@ public class GroceryCardDAO {
     	
     }
     
+    /**
+     * This method gets the latest created grocery list that the user has made.
+     * 
+     * @param userID
+     * @throws SQLException
+     */
     public int getUserGroceryListID(int userID) throws SQLException{
     	
     	String sql = "SELECT list_id FROM user_creates_grocerylist WHERE user_id = ? " + 
@@ -117,6 +133,16 @@ public class GroceryCardDAO {
     	return listID;
     }
     
+
+    /**
+     * 
+     * This method removes a food item from a grocery list from taking the food item id to be removed
+     * from the grocery list id.
+     * 
+     * @param listID
+     * @param foodID
+     * @throws SQLException
+     */
     public void removeFromGroceryList(int listID, int foodID) throws SQLException {
     	
     	String sql = "DELETE FROM food_lists_grocerylist WHERE list_id = ? AND food_id = ?";
@@ -135,7 +161,13 @@ public class GroceryCardDAO {
     	mysqlDisconnect();
     	
     }
-    
+    /**
+     * This method brings back the grocery card that a user current has stored.
+     * 
+     * @param listID
+     * @return
+     * @throws SQLException
+     */
     public GroceryCard restoreGroceryCard(int listID) throws SQLException {
     	
     	GroceryCard gCard = new GroceryCard();

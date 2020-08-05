@@ -128,7 +128,9 @@ public class UserDishGroceryListServlet extends HttpServlet {
 
          // All cases - Always display the shopping cart
          if (gCard.isEmpty()) {
-            out.println("<p>Your Grocery List is empty</p>");
+            //out.println("<p>Your Grocery List is empty</p>");
+             htmlStr += "<p>Your Grocery List is empty</p>";
+             out.println(htmlStr);
          } else {
             htmlStr += "<table border='1' cellpadding='6'>\n"
             + "<tr>\n"

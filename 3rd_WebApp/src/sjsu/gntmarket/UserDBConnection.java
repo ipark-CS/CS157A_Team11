@@ -6,6 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**
+ * 
+ * This is a test class, it is NOT USED in the program.
+ * 
+ *
+ */
 public class UserDBConnection {
 	
 	public User userLogin(String email, String password) throws Exception{

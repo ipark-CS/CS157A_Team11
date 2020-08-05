@@ -8,6 +8,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
+/**
+ * This servlet is much like the GroceryCardServlet, only it is used for the Dish Menu.
+ * 
+ */
 public class DishGroceryCardServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

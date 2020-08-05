@@ -84,28 +84,6 @@ public class DishSearchServlet extends HttpServlet
           System.out.println(sqlStr);  // for debugging
           ResultSet rset = stmt.executeQuery(sqlStr);
 
-            /*
-          String sqlStr = "SELECT f.name AS name, "
-          + "f.food_id AS food_id,  "
-          + "GROUP_CONCAT(n.name SEPARATOR ', ') AS Nutrients  "
-          + "FROM Food_has_Nutrient fn NATURAL JOIN  Nutrient n  "
-          + "JOIN Food f ON f.food_id WHERE  ";
-          if (hasFname)
-              sqlStr += "f.name='" + fname + "'   ";
-          if (hasFsearch) {
-              if (hasFname) 
-                  sqlStr += " OR ";
-              sqlStr += "f.name LIKE '%" + fsearchW.trim() + "%'  ";
-          } 
-          sqlStr += "AND fn.food_id=f.food_id "
-          + "GROUP BY f.food_id";
-          System.out.println(sqlStr);  // for debugging
-          ResultSet rset = stmt.executeQuery(sqlStr);
-            */
-
-
-
-
           if (!rset.next()) {  
              htmlStr += "<h3>No food found.</h3>\n"
              + "<p><a href='food'>Back to Select Menu</a></p>\n";
@@ -117,27 +95,6 @@ public class DishSearchServlet extends HttpServlet
              + "<th>Add</th>\n"
              + "<th>Delete</th>\n"
              + "</tr>\n";
-  			
-             // ResultSet's cursor now pointing at first row
-             /*
-            do {
-                String id = rset.getString("food_id");
-                htmlStr += "<tr>\n"
-                + "<td>" + rset.getString("name") + "</td>\n"
-                + "<td><form method='get' action='gCard'>\n"
-                + "<input type='hidden' name='todo' value='addF'/>\n"
-                + "<input type='hidden' name='id' value='" + id + "'/>\n"
-                + "<input type='submit' value='[+]'/>\n"
-                + "</form></td>\n"
-                + "<td><form method='get' action='gCard'>\n"
-                + "<input type='hidden' name='todo' value='delF'/>\n"
-                + "<input type='hidden' name='id' value='" + id + "'/>\n"
-                + "<input type='submit' value='[x]'/>\n"
-                + "</form></td></tr>\n";
-             }  while (rset.next());
-             htmlStr += "</table><br/>\n"
-             + "<p><a href='dish'>Select More Dish</a></p>\n";
-             */
 
             htmlStr += "<form method='get' action='dgCard'>\n";
             do {
@@ -159,10 +116,10 @@ public class DishSearchServlet extends HttpServlet
                 GroceryCard gCard;
                 User currentUser;       
                 
+                // Retrieve the shopping cart for this session, if any. Otherwise, create one.
                 synchronized (session) {
-                   // Retrieve the shopping cart for this session, if any. Otherwise, create one.
+                  
                    //gCard = (GroceryCard) session.getAttribute("dgCard");
-                	
                 	
 	                currentUser = (User)session.getAttribute("currentUser");
 	                
