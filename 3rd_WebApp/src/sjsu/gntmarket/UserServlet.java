@@ -54,6 +54,9 @@ public class UserServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
+	/**
+	 * Based on the URL a particular method will be called or the user will just get redirected to the home page.
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
 
@@ -91,6 +94,16 @@ public class UserServlet extends HttpServlet {
 		}
 	}
 	
+	/**
+	 * 
+	 * Method to make display all the users in the database, only used for testing purposes.
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void listUser(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		
@@ -98,14 +111,22 @@ public class UserServlet extends HttpServlet {
 		
 		System.out.println("Before Index Dispatch, list count: " + userList.size());
 		
-		//ServletContext sc = getServletContext();
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("user.jsp");
 		
 		request.setAttribute("userList", userList);
 		dispatcher.forward(request, response);
 	}
 	
+	/**
+	 * 
+	 * Method call made when a new account is created
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void insertUser(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		
@@ -144,6 +165,15 @@ public class UserServlet extends HttpServlet {
 
 	}
 	
+	/**
+	 * Method call made to log in the user
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	public void loginUser(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
 		
@@ -156,8 +186,6 @@ public class UserServlet extends HttpServlet {
 	    
 	    HttpSession session = request.getSession();
 	    session.setAttribute("currentUser", returningUser);
-	    
-	    //response.sendRedirect("grocerylist.jsp");
 	    
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);

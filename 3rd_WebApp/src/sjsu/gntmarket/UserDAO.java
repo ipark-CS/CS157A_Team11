@@ -47,6 +47,13 @@ public class UserDAO {
     	}
     }
     
+    /**
+     * This method is called to insert a new user to the users table when a new account is created.
+     * 
+     * @param user
+     * @return
+     * @throws SQLException
+     */
     public boolean createUser(User user) throws SQLException {
     	String sql = "INSERT INTO users (email, password, name) VALUES (?, ?, ?)";
     	mysqlConnect();
@@ -63,6 +70,17 @@ public class UserDAO {
     	return userCreated;
     }
     
+    /**
+     * 
+     * This method is used to get the userID when a user logs in.
+     * The userID is then used to be kept track of for any database calls that use
+     * the user's id number.
+     * 
+     * @param email
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     public int restoreUserID(String email, String password) throws SQLException{
     	
     	String sql = "SELECT user_id FROM users WHERE email = ? AND password = ?";
@@ -97,16 +115,11 @@ public class UserDAO {
     }
     /**
      * 
-                    sqlStr = "SELECT food_id FROM user_marks_food WHERE " 
-               + "user_id="+ userID + " AND food_id=" + id + " AND "
-               + "is_restricted=1 GROUP BY food_id";
+     * This method is used to mark to keep track of what food items that a user has marked as a like or restriction.
+     * Based on what the used has marked as a like or restriction an update is made to the database.
+     * 
      */
-    
     public void userMarksFood(String userID, String foodID, int isRestricted, int isFavorite) throws SQLException{
-    	
-    	/*String sqlStr = "SELECT food_id FROM user_marks_food " 
-                + "WHERE user_id="+ userID + " AND food_id=" + foodID + " "
-                + "AND is_restricted=1 GROUP BY food_id";*/
     	
     	String sqlStr = "UPDATE user_marks_food " + 
     					"SET is_restricted = ? AND is_favorite = ? " +
@@ -121,7 +134,6 @@ public class UserDAO {
     	statement.setString(3, userID);
     	statement.setString(4, foodID);
     	
-    	//Statement statement = dbCon.createStatement();
     	
     	System.out.println(sqlStr);
     	
@@ -132,6 +144,14 @@ public class UserDAO {
     	mysqlDisconnect();
     }
     
+    /**
+     * 
+     * This method is more for testing and debugging purposes, but it is used to make calls to retrieve all the users that have accounts 
+     * with the web application.
+     * 
+     * @return
+     * @throws SQLException
+     */
     public List<User> listUsers() throws SQLException {
     	List<User> userList = new ArrayList<User>();
     	
@@ -168,6 +188,15 @@ public class UserDAO {
     	return userList;
     }
     
+    /**
+     * 
+     * A method used to a return a user object once the user enters their credentials to login.
+     * 
+     * @param email
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     public User getUser(String email, String password) throws SQLException {
     	User user = null;
     	
@@ -198,6 +227,14 @@ public class UserDAO {
     	return user;
     }
     
+    /**
+     * 
+     * Method used to make updates to the user's information such as their password.
+     * 
+     * @param user
+     * @return
+     * @throws SQLException
+     */
     public boolean updateUser(User user) throws SQLException{
     	String sql = "UPDATE users SET email = ?, password = ?, name = ? WHERE user_id = ?";
     	
@@ -217,6 +254,14 @@ public class UserDAO {
     	return userUpdated;
     }
     
+    /**
+     * 
+     * Method to delete a user from the database.
+     * 
+     * @param user
+     * @return
+     * @throws SQLException
+     */
     public boolean deleteUser(User user) throws SQLException{
     	
     	String sql = "DELETE FROM users WHERE user_id = ?";

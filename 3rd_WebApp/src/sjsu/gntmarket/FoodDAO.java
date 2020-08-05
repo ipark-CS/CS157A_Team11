@@ -47,14 +47,14 @@ public class FoodDAO {
     	}
     }
     
-    public void listAllFood() throws SQLException{
-    	
-    	mysqlConnect();
-    	
-    	mysqlDisconnect();
-    	
-    }
-    
+    /**
+     * 
+     * Used to get the grocery items and their respective nutrient information to be displayed on the grocery list
+     * 
+     * @param gCard
+     * @return
+     * @throws SQLException
+     */
     public List<GroceryListRow> getGroceryRows(GroceryCard gCard) throws SQLException{
     	
     	mysqlConnect();
@@ -74,7 +74,6 @@ public class FoodDAO {
             + "GROUP BY fn.food_id\n";
             
             PreparedStatement stmt = dbCon.prepareStatement(sqlStr2);
-        	//stmt.setInt(1, userID);
             
             ResultSet rset2 = stmt.executeQuery(sqlStr2);
             
@@ -95,6 +94,14 @@ public class FoodDAO {
 		return groceryArrList;
     }
     
+    /**
+     * 
+     * A previous attempt to display the grocery list items with their nutrient information. Not actually in the application.
+     * 
+     * @param gCard
+     * @return
+     * @throws SQLException
+     */
     public HashMap<String, String> getFoodNutrients(GroceryCard gCard) throws SQLException{
     	
     	mysqlConnect();

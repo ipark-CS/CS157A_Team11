@@ -1,5 +1,10 @@
 package sjsu.gntmarket;
 
+/**
+ * 
+ * A class that extends GroceryCardItem to also store the nutrient of a food idea.
+ * 
+ */
 public class GroceryListRow extends GroceryCardItem {
 	
 	private String nutrientInfo;

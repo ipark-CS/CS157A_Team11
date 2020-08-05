@@ -6,6 +6,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 
+ * This is a test class, it is NOT USED in the program.
+ * 
+ */
 public class MySqlCon {
 	// must use mysql-connector-java-8.0.19.jar (exactly same version of mysql-server)
     private static String driver = "com.mysql.cj.jdbc.Driver";

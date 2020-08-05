@@ -155,15 +155,6 @@ public class GroceryCardServlet extends HttpServlet {
             
             userDAO.userMarksFood(userID, id, 1, 0);
             
-            //sqlStr = "INSERT INTO user_marks_food values (100, " + id + ", 1, 0)";
-            /*
-            sqlStr = "UPDATE user_marks_food "
-            + "SET is_restricted=1, is_favorite=0 "
-            + "WHERE food_id='" + id + "' "
-            + "AND user_id = '" + userID + "'";
-            System.out.println(sqlStr);  // for debugging
-            stmt.executeUpdate(sqlStr);
-            */
          } else if (todo.equals("likeF")) {
             String id = request.getParameter("id");  // Only one id for remove case
             sqlStr = "REPLACE INTO user_marks_food VALUES (" 
@@ -176,19 +167,13 @@ public class GroceryCardServlet extends HttpServlet {
             
             userDAO.userMarksFood(userID, id, 0, 1);
             
-            /*
-            sqlStr = "UPDATE user_marks_food "
-            + "SET is_restricted=0, is_favorite=1 "
-            + "WHERE food_id='" + id + "' "
-            + "AND user_id = '" + userID + "'";
-            System.out.println(sqlStr);  // for debugging
-            stmt.executeUpdate(sqlStr);
-            */
          }
  
          // All cases - Always display the shopping cart
          if (gCard.isEmpty()) {
-            out.println("<p>Your Grocery List is empty</p>");
+            //out.println("<p>Your Grocery List is empty</p>");
+             htmlStr += "<p>Your Grocery List is empty</p>";
+             out.println(htmlStr);
             
          } else {
             htmlStr += "<table border='1' cellpadding='6'>\n"
@@ -249,29 +234,34 @@ public class GroceryCardServlet extends HttpServlet {
       doGet(request, response);
    }
    
-	public void displayGroceryList(HttpServletRequest request, HttpServletResponse response, GroceryCard gCard)
+   /**
+    * 
+    * This method is used to pass on the grocery list that a user has stored and display it on the grocery list page.
+    * It sets the attribute to the current grocery list of the user that it made be used on the grocerylist.jsp page.
+    * 
+    * @param request
+    * @param response
+    * @param gCard
+    * @throws ServletException
+    * @throws IOException
+    * @throws SQLException
+    */
+   public void displayGroceryList(HttpServletRequest request, HttpServletResponse response, GroceryCard gCard)
 			throws ServletException, IOException, SQLException {
 		
-		//System.out.println("Before Index Dispatch, list count: " + userList.size());
-		
-		Map<String, String> foodNutrientMap = new HashMap<String, String>();
 		
 		List<GroceryListRow> groceryArrList = new ArrayList<GroceryListRow>();
-		
-		foodNutrientMap = foodDAO.getFoodNutrients(gCard);
 		
 		groceryArrList = foodDAO.getGroceryRows(gCard);
 		
 		request.setAttribute("gCard", gCard);
-		//request.setAttribute("foodNutrientMap", foodNutrientMap);
 		request.setAttribute("groceryArrList", groceryArrList);
 		
 	    HttpSession session = request.getSession();
 	    session.setAttribute("gCard", gCard);
-	    //session.setAttribute("foodNutrientMap", foodNutrientMap);
 	    session.setAttribute("groceryArrList", groceryArrList);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("grocerylist.jsp");
 		dispatcher.forward(request, response);
-	}
+   }
 }
